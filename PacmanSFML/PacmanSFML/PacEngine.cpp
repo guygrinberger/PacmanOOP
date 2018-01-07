@@ -483,6 +483,8 @@ int PacEngine::fetchTileAt(sf::Vector2i pos,sf::Vector2i off)
 	//do not drive out of boundaries
 	if (y != fitBetween(0, y, horizontal - 1) || x != fitBetween(0, x, vertical - 1))
 	{
+		if ((pos.x == (vertical - 1)) || (pos.y = (horizontal - 1)))
+			return RedWall;
 		if(gameObjects[fitBetween(0, x, vertical - 1)][y - 1]->symbol == RedWall)
 			return RedWall;
 		if (gameObjects[fitBetween(0, x, vertical - 1)][y - 1]->symbol == BlueWall)
