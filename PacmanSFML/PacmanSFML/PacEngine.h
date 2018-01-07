@@ -64,6 +64,8 @@ public:
 	int ghostpos = 0;
 	sf::Clock cookieTimer;
 	std::deque<PacEvent> mEventsList;
+	bool spaceClicked = false,
+		 isDifferentLevel = false;
 	
 private:
 	//methods:
@@ -75,10 +77,12 @@ private:
 	int fetchTileAt(sf::Vector2i pos,sf::Vector2i off);
 	//PacEntity::eDirection getNextMove(sf::Vector2f pos,sf::Vector2i targ,PacEntity::eDirection cur);
 	sf::Vector2i getTarg(int who);
+	 //global Clock
 	//vars:
 	sf::Vector2i cherryPos, startPacPos;
 	vector<sf::Vector2i> startPos;
 	int mLives, mTotalPills, mCherryCountDown, mGhostKillStreak;
 	//PacEntity guys[5];
 	PacEntity::eDirection getNextMove(PacEntity& ent);
+	double overallSpeed = 3;
 };

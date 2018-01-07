@@ -142,20 +142,27 @@ void GameState::run(PointerPack& pack)
 					pack.Manager->pushTop(new QuitState());
 					return;
 					break;
+				case sf::Keyboard::Space:
+					mEngine.spaceClicked = true;
+					break;
 				case sf::Keyboard::W:
 				case sf::Keyboard::Up:
+					mEngine.spaceClicked = false;
 					mEngine.setPacDirection(PacEntity::Up);
 					break;
 				case sf::Keyboard::S:
 				case sf::Keyboard::Down:
+					mEngine.spaceClicked = false;
 					mEngine.setPacDirection(PacEntity::Down);
 					break;
 				case sf::Keyboard::A:
 				case sf::Keyboard::Left:
+					mEngine.spaceClicked = false;
 					mEngine.setPacDirection(PacEntity::Left);
 					break;
 				case sf::Keyboard::D:
 				case sf::Keyboard::Right:
+					mEngine.spaceClicked = false;
 					mEngine.setPacDirection(PacEntity::Right);
 					break;
 				}
@@ -190,11 +197,11 @@ void GameState::run(PointerPack& pack)
 		pack.Window->clear();
 		stock += clock.restart();
 
-		while(stock >= delta)
-		{
-			stock -= delta;
+		//while(stock >= delta)
+		//{
+		//	stock -= delta;
 			mEngine.update();
-		}
+		//}
 		drawAll();
 
 		pack.Window->draw(score);

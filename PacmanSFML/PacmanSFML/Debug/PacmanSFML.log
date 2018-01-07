@@ -1,14 +1,2 @@
-﻿  StateManager.cpp
-  ScoreState.cpp
-  PacEngine.cpp
-  MenuState.cpp
-  main.cpp
-  GameState.cpp
-c:\users\guy\source\repos\pacmanoop\pacmansfml\pacmansfml\gamestate.cpp(204): warning C4996: 'sf::Text::setColor': was declared deprecated
-  c:\users\guy\source\vcpkg-master\installed\x86-windows\include\sfml\graphics\text.hpp(177): note: see declaration of 'sf::Text::setColor'
-c:\users\guy\source\repos\pacmanoop\pacmansfml\pacmansfml\gamestate.cpp(206): warning C4996: 'sf::Text::setColor': was declared deprecated
-  c:\users\guy\source\vcpkg-master\installed\x86-windows\include\sfml\graphics\text.hpp(177): note: see declaration of 'sf::Text::setColor'
-c:\users\guy\source\repos\pacmanoop\pacmansfml\pacmansfml\gamestate.cpp(208): warning C4996: 'sf::Text::setColor': was declared deprecated
-  c:\users\guy\source\vcpkg-master\installed\x86-windows\include\sfml\graphics\text.hpp(177): note: see declaration of 'sf::Text::setColor'
-  Generating Code...
+﻿  PacEngine.cpp
   PacmanSFML.vcxproj -> C:\Users\Guy\Source\Repos\PacmanOOP\PacmanSFML\Debug\PacmanSFML.exe

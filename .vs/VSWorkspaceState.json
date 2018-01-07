@@ -1,6 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\PacmanSFML",
+    "\\PacmanSFML\\PacmanSFML"
   ],
+  "SelectedNode": "\\PacmanSFML\\PacmanSFML.sln",
   "PreviewInSolutionExplorer": false
 }

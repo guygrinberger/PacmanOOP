@@ -318,43 +318,43 @@ void PacEngine::makeWallsMap(sf::RenderTarget& target)
 	for(int x = 0; x < vertical - 1; ++x)
 	{
 		if((gameObjects[x][0]->symbol == RedWall) && (gameObjects[x+1][0]->symbol == RedWall))
-			drawHorizontalLine(target, x, x + 1, 0, sf::Color::Red);
+			drawHorizontalLine(target, x, x + 1, 0, sf::Color::White);
 
 		if((gameObjects[x][horizontal - 1]->symbol == RedWall) && (gameObjects[x + 1][horizontal - 1]->symbol == RedWall))
-			drawHorizontalLine(target, x, x + 1, horizontal - 1, sf::Color::Red);
+			drawHorizontalLine(target, x, x + 1, horizontal - 1, sf::Color::White);
 
 		if ((gameObjects[x][0]->symbol == GreenWall) && (gameObjects[x + 1][0]->symbol == GreenWall))
-			drawHorizontalLine(target, x, x + 1, 0, sf::Color::Green);
+			drawHorizontalLine(target, x, x + 1, 0, sf::Color::White);
 
 		if ((gameObjects[x][horizontal - 1]->symbol == GreenWall) && (gameObjects[x + 1][horizontal - 1]->symbol == GreenWall))
-			drawHorizontalLine(target, x, x + 1, horizontal - 1, sf::Color::Green);
+			drawHorizontalLine(target, x, x + 1, horizontal - 1, sf::Color::White);
 
 		if ((gameObjects[x][0]->symbol == BlueWall) && (gameObjects[x + 1][0]->symbol == BlueWall))
-			drawHorizontalLine(target, x, x + 1, 0, sf::Color::Blue);
+			drawHorizontalLine(target, x, x + 1, 0, sf::Color::White);
 
 		if ((gameObjects[x][horizontal - 1]->symbol == BlueWall) && (gameObjects[x + 1][horizontal - 1]->symbol == BlueWall))
-			drawHorizontalLine(target, x, x + 1, horizontal - 1, sf::Color::Blue);
+			drawHorizontalLine(target, x, x + 1, horizontal - 1, sf::Color::White);
 	}
 
 	for(int y = 0; y < horizontal - 1; ++y)
 	{
 		if((gameObjects[0][y]->symbol == RedWall) && (gameObjects[0][y+1]->symbol == RedWall))
-			drawVerticalLine(target, y, y + 1, 0, sf::Color::Red);
+			drawVerticalLine(target, y, y + 1, 0, sf::Color::White);
 
 		if((gameObjects[vertical - 1][y]->symbol == RedWall) && (gameObjects[vertical - 1][y+1]->symbol == RedWall))
-			drawVerticalLine(target, y , y+1 ,vertical - 1, sf::Color::Red);
+			drawVerticalLine(target, y , y+1 ,vertical - 1, sf::Color::White);
 
 		if ((gameObjects[0][y]->symbol == GreenWall) && (gameObjects[0][y + 1]->symbol == GreenWall))
-			drawVerticalLine(target, y, y + 1, 0, sf::Color::Green);
+			drawVerticalLine(target, y, y + 1, 0, sf::Color::White);
 
 		if ((gameObjects[vertical - 1][y]->symbol == GreenWall) && (gameObjects[vertical - 1][y + 1]->symbol == GreenWall))
-			drawVerticalLine(target, y, y + 1, vertical - 1, sf::Color::Green);
+			drawVerticalLine(target, y, y + 1, vertical - 1, sf::Color::White);
 
 		if ((gameObjects[0][y]->symbol == BlueWall) && (gameObjects[0][y + 1]->symbol == BlueWall))
-			drawVerticalLine(target, y, y + 1, 0, sf::Color::Blue);
+			drawVerticalLine(target, y, y + 1, 0, sf::Color::White);
 
 		if ((gameObjects[vertical - 1][y]->symbol == BlueWall) && (gameObjects[vertical - 1][y + 1]->symbol == BlueWall))
-			drawVerticalLine(target, y, y + 1, vertical - 1, sf::Color::Blue);
+			drawVerticalLine(target, y, y + 1, vertical - 1, sf::Color::White);
 	}
 
 	for(int x = 1; x < vertical - 1; ++x) 
@@ -402,13 +402,27 @@ void PacEngine::makeWallsMap(sf::RenderTarget& target)
 
 void PacEngine::updatePac()
 {
+	sf::Clock globalClock;
+	globalClock.restart();
 	//std::cout<<guys[0].position.x<<" "<<guys[0].position.y<<"\n";
 	guys[0]->entity.position.x += 16 * vertical;//as below, to avoid problems with negative numbers modulos
 	guys[0]->entity.position.x %= 16 * vertical;//for tunnel purposes
 
-	sf::Vector2i update = guys[Pac]->entity.getVectorFromDirection();
+	sf::Vector2i update;
+	//if (!spaceClicked)
+	update = guys[Pac]->entity.getVectorFromDirection();
+	//else
+	//	sf::Vector2i update = { 0, 0 };
+	guys[Pac]->entity.speed = 3;
 	
 	int i;
+
+	if (spaceClicked)
+		guys[Pac]->entity.speed = 0;
+	else if(!spaceClicked && lastCookieEaten != 42)
+		guys[Pac]->entity.speed = overallSpeed;
+	else
+		guys[Pac]->entity.speed = 3;
 
 	for(i = 0; i < guys[Pac]->entity.speed; ++i)
 	{
@@ -418,9 +432,10 @@ void PacEngine::updatePac()
 	}
 
 	if (lastCookieEaten == GreenCookie)
-		if (cookieTimer.getElapsedTime().asSeconds() >= 14)
+		if (cookieTimer.getElapsedTime().asSeconds() >= 14 )
 		{
 			guys[Pac]->entity.speed = 3;
+			overallSpeed = 3;
 			lastCookieEaten = 42;
 		}
 
@@ -428,6 +443,7 @@ void PacEngine::updatePac()
 		if (cookieTimer.getElapsedTime().asSeconds() >= 7)
 		{
 			guys[Pac]->entity.speed = 3;
+			overallSpeed = 3;
 			lastCookieEaten = 42;
 		}
 
@@ -463,7 +479,7 @@ void PacEngine::updatePac()
 			tmp = Empty;
 			mEventsList.push_back(PacEvent(ScoreChange, (ghostpos + 1) * 2));
 			checkPills();
-			guys[Pac]->entity.speed += (guys[Pac]->entity.speed / 5);
+			overallSpeed += (overallSpeed / 5);
 			break;
 		case BlueCookie:
 			lastCookieEaten = BlueCookie;
@@ -471,7 +487,7 @@ void PacEngine::updatePac()
 			tmp = Empty;
 			mEventsList.push_back(PacEvent(ScoreChange, (ghostpos + 1) * 2));
 			checkPills();
-			guys[Pac]->entity.speed -= (guys[Pac]->entity.speed / 10);
+			overallSpeed -= (overallSpeed / 10);
 			break;
 		case Booster:
 			tmp=Empty;
@@ -497,10 +513,13 @@ void PacEngine::updatePac()
 		update=guys[Pac]->entity.getVectorFromDirection();
 	}//pac @ node
 
-	for(; i < guys[Pac]->entity.speed; ++i)
-	{
-		guys[Pac]->entity.position += update;
-	}
+
+		//for(; i < guys[Pac]->entity.speed; ++i)
+		//{
+		//	guys[Pac]->entity.position += update;
+		//	if (guys[Pac]->entity.isAtNode())
+		//		break;
+		//}
 }
 
 void PacEngine::checkCollisions()
@@ -543,19 +562,15 @@ void PacEngine::resetPositions()
 			guys[i]->entity.position = startPos[i - 1];
 		}
 
-	/*guys[Blinky].position=startPos[0];
-	guys[Inky].position=startPos[1];
-	guys[Pinky].position=startPos[2];
-	guys[Clyde].position=startPos[3];*/
-	//guys[Pac].position = getPosFromNode(1,1);
 	guys[Pac]->entity.position = startPacPos;
 	guys[Pac]->entity.direction = PacEntity::None;
 	guys[Pac]->entity.nextMove = PacEntity::None;
-	if (guys.size() >= 2)
-		for(unsigned int i = 1; i <= startPos.size(); ++i)
-		{
-			guys[i]->entity.scared=0;
-		}
+
+	//if (guys.size() >= 2)
+	//	for(unsigned int i = 1; i <= startPos.size(); ++i)
+	//	{
+	//		guys[i]->entity.scared=0;
+	//	}
 }
 
 int PacEngine::fetchTileAt(sf::Vector2i pos,sf::Vector2i off)
@@ -569,11 +584,11 @@ int PacEngine::fetchTileAt(sf::Vector2i pos,sf::Vector2i off)
 	//do not drive out of boundaries
 	if (y != fitBetween(0, y, horizontal - 1) || x != fitBetween(0, x, vertical - 1))
 	{
-		if(gameObjects[fitBetween(0, x, vertical - 1)][y]->symbol == RedWall)
+		if(gameObjects[fitBetween(0, x, vertical - 1)][y - 1]->symbol == RedWall)
 			return RedWall;
-		if (gameObjects[fitBetween(0, x, vertical - 1)][y]->symbol == BlueWall)
+		if (gameObjects[fitBetween(0, x, vertical - 1)][y - 1]->symbol == BlueWall)
 			return BlueWall;
-		if (gameObjects[fitBetween(0, x, vertical - 1)][y]->symbol == GreenWall)
+		if (gameObjects[fitBetween(0, x, vertical - 1)][y - 1]->symbol == GreenWall)
 			return GreenWall;
 	}
 	return gameObjects[x][y]->symbol;
