@@ -1,2 +1,4 @@
-﻿  PacEngine.cpp
+﻿  StateManager.cpp
+  MenuState.cpp
+  Generating Code...
   PacmanSFML.vcxproj -> C:\Users\Guy\Source\Repos\PacmanOOP\PacmanSFML\Debug\PacmanSFML.exe

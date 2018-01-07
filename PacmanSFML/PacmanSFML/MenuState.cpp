@@ -16,7 +16,7 @@ void MenuState::run(PointerPack& pack)
 	mHigh.setFont(*pack.Font);
 	mQuit.setFont(*pack.Font);
 
-	mTitle.setString("PakMan");
+	mTitle.setString("Pacman Biberman");
 	mPlay.setString("[P]lay!");
 	mHigh.setString("[H]igh Scores!");
 	mQuit.setString("[Q]uit!");
