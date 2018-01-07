@@ -38,7 +38,6 @@ public:
 		BlueWall = 'D'
 	};
 
-	enum ScareStatus{Brave,Scared,Blinking,Dead};
 	PacEngine();
 	sf::Vector2f getPosition(int who);
 	sf::Vector2i publicPacPos;
@@ -55,8 +54,7 @@ public:
 	int ghostpos = 0;
 	sf::Clock cookieTimer;
 	std::deque<PacEvent> mEventsList;
-	bool spaceClicked = false,
-		 isDifferentLevel = false;
+	bool spaceClicked = false;
 	
 private:
 	void updatePac();
