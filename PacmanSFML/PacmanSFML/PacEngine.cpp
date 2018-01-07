@@ -608,9 +608,9 @@ void PacEngine::checkPills()
 
 	if(tmp == 0) 
 		mEventsList.push_back(PacEvent(PillsExhausted, 0));
-	if(tmp < 0.3f  * mTotalPills)
-		if(guys.size() >= 2)
-			guys[Blinky]->entity.speed=3;
+	//if(tmp < 0.3f  * mTotalPills)
+	//	if(guys.size() >= 2)
+	//		guys[Blinky]->entity.speed=3;
 }
 
 void PacEngine::updateGhost(int who)

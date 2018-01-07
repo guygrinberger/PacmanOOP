@@ -8,6 +8,9 @@ MenuState::MenuState(){}
 
 void MenuState::run(PointerPack& pack)
 {
+	mAtlas.loadFromFile("bibreman.png");
+	yoram.setTexture(mAtlas);
+	yoram.setPosition(-50.f, 320.f);
 	mTitle.setFont(*pack.Font);
 	mPlay.setFont(*pack.Font);
 	mHigh.setFont(*pack.Font);
@@ -51,6 +54,7 @@ void MenuState::run(PointerPack& pack)
 		pack.Window->draw(mPlay);
 		pack.Window->draw(mHigh);
 		pack.Window->draw(mQuit);
+		pack.Window->draw(yoram);
 		pack.Window->display();
 	}
 }

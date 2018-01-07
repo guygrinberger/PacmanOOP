@@ -1,6 +1,7 @@
 #pragma once
 #include "State.h"
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 
 class MenuState : public State
 {
@@ -13,4 +14,6 @@ private:
 			 mPlay,
 			 mHigh,
 			 mQuit;
+	sf::Sprite yoram;
+	sf::Texture mAtlas;
 };

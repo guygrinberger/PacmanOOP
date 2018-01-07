@@ -92,7 +92,10 @@ void GameState::run(PointerPack& pack)
 	{
 		mPack=&pack;
 		mapOk=loadMap();
-
+		sound.loadFromFile("bad.ogg");
+		raMeod.setBuffer(sound);
+		sound.loadFromFile("shalom.ogg");
+		shalom.setBuffer(sound);
 		lives.setFont(*pack.Font);
 		score.setFont(*pack.Font);
 		level.setFont(*pack.Font);
@@ -177,9 +180,11 @@ void GameState::run(PointerPack& pack)
 				return;
 				break;
 			case PacDied:
+				raMeod.play();
 				lives.setString("Lives:" + std::to_string(peve.data));
 				break;
 			case PillsExhausted:
+				shalom.play();
 				mEngine.mEventsList.push_back(PacEvent(ScoreChange, (guys.size() * 50)));
 				mEngine.gameObjects.clear();
 				mapOk=loadMap();

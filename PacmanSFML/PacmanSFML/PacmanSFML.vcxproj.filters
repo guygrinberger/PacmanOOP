@@ -78,5 +78,12 @@
   <ItemGroup>
     <Image Include="testpacWhite - Copy.tga" />
     <Image Include="testpacWhite.tga" />
+    <Image Include="bibreman.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bad.ogg" />
+    <None Include="shalom.ogg" />
   </ItemGroup>
 </Project>

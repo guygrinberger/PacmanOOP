@@ -16,8 +16,8 @@ ScoreState::ScoreState(int score) : mWritingTo(-1),mScore(score)
 		//int tmp;
 		std::string temp;
 		file>>temp;
-		file>>tmpscores[i];
-		mLines[i].setString(temp+" " + std::to_string(tmpscores[i]));
+		file>>tmpscores[i]; 
+		mLines[i].setString(temp + " " + std::to_string(tmpscores[i]));
 	}
 	for(int i = 0; i < 10; ++i)
 	{

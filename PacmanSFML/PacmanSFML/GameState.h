@@ -7,6 +7,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/System/Clock.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/Audio.hpp>
 
 class GameState : public State
 {
@@ -23,8 +24,11 @@ private:
 	void drawWall(int x, int y);
 	void drawPill(int x,int y);
 	void drawGhosts();
+	
 	//vars:
 	sf::Text lives, score, level, speed, time;
+	sf::Sound raMeod, shalom;
+	sf::SoundBuffer sound;
 	bool mapOk;
 	sf::Texture mAtlas;
 	PointerPack * mPack;
