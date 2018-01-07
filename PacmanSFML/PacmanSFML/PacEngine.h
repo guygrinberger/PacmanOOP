@@ -9,7 +9,7 @@
 #include <vector>
 using std::vector;
 
-enum eEntsID{Pac=0,Blinky=1,Inky=2,Pinky=3,Clyde=4};
+enum eEntsID { Pac = 0 };
 
 struct object
 {

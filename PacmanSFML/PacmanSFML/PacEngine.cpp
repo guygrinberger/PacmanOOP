@@ -70,11 +70,6 @@ PacEntity::eDirection getDirFromVec(sf::Vector2i from)
 	return PacEntity::Right; 
 }
 
-bool ClydeChase(PacEntity pac, PacEntity cly)
-{
-	return get2DistanceFromNodes(pac.position,cly.position) > 3*64*256;
-}
-
 int ghostKillPts(int& number)
 {
 	++number;
