@@ -17,15 +17,10 @@ public:
 	bool loadMap();
 
 private:
-	//methods:
 	void drawAll();
-	void drawCherry(int x,int y);
-	void drawBooster(int x,int y);
 	void drawWall(int x, int y);
 	void drawPill(int x,int y);
 	void drawGhosts();
-	
-	//vars:
 	sf::Text lives, score, level, speed, time;
 	sf::Sound raMeod, shalom;
 	sf::SoundBuffer sound;

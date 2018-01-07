@@ -23,13 +23,7 @@ class PacEngine
 public:
 	enum TileType
 	{
-		Cherry = '0',
-		Pill = '1',
-		Booster = '2',
-		Wall = '3',
-		Tunnel = '7',
 		Empty = '8',
-		GhostSpawn = '9',
 		RedPacman = '@',
 		RedElf = '%',
 		RedCookie = '*',
@@ -54,9 +48,6 @@ public:
 	bool getEvent(PacEvent& event);
 	void setPacDirection(PacEntity::eDirection direction);
 	void makeWallsMap(sf::RenderTarget & target);
-	//16x16 tiles, top 3 and bottom 2 rows go for texts,array in interface=ugly
-	//unsigned char mMap[horizontal][vertical];
-	ScareStatus getScareStatus(int who)const;
 	vector<std::vector<object*>> gameObjects;// Pacman game objects
 	vector<object*> guys;
 	int vertical, horizontal;
@@ -68,21 +59,16 @@ public:
 		 isDifferentLevel = false;
 	
 private:
-	//methods:
 	void updatePac();
 	void checkCollisions();
 	void resetPositions();
 	void checkPills();
 	void updateGhost(int who);
 	int fetchTileAt(sf::Vector2i pos,sf::Vector2i off);
-	//PacEntity::eDirection getNextMove(sf::Vector2f pos,sf::Vector2i targ,PacEntity::eDirection cur);
-	sf::Vector2i getTarg(int who);
-	 //global Clock
-	//vars:
-	sf::Vector2i cherryPos, startPacPos;
-	vector<sf::Vector2i> startPos;
-	int mLives, mTotalPills, mCherryCountDown, mGhostKillStreak;
-	//PacEntity guys[5];
 	PacEntity::eDirection getNextMove(PacEntity& ent);
+	sf::Vector2i getTarg(int who);
+	sf::Vector2i startPacPos;
+	vector<sf::Vector2i> startPos;
+	int mLives, mTotalPills;
 	double overallSpeed = 3;
 };

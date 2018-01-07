@@ -7,7 +7,7 @@
 
 bool enterable(unsigned char number)
 {
-	if (number == PacEngine::Wall || number == PacEngine::RedWall || number == PacEngine::BlueWall || number == PacEngine::GreenWall)
+	if (number == PacEngine::RedWall || number == PacEngine::BlueWall || number == PacEngine::GreenWall)
 		return false;
 
 	return true;
@@ -89,7 +89,7 @@ int ghostKillPts(int& number)
 }
 
 
-PacEngine::PacEngine():mLives(3),mCherryCountDown(0)
+PacEngine::PacEngine():mLives(3)
 {
 
 }
@@ -109,21 +109,8 @@ bool PacEngine::loadMap(const std::string& path)
 	mTotalPills = 0;
 	ghostpos = 0;
 	startPos.resize(0);
-	//tempS
-	//guys[Pac].position = sf::Vector2i(1, 1);
 	guys.resize(1);
 	guys[Pac] = new object;
-	//cookieTimer.restart();
-	//guys[Pac]->entity.speed = 3;
-	//guys[Pac]->entity.direction = PacEntity::Right;
-
-	//tempE
-	//for (int i = 1; i <= 4; ++i)
-	//{
-	//	guys[i].speed = 2;
-	//	guys[i].scared = 0;
-	//}
-
 	std::ifstream file(path.c_str());
 
 	if (!file.is_open())
@@ -155,14 +142,6 @@ bool PacEngine::loadMap(const std::string& path)
 
 			switch (current)
 			{
-			case Pill:
-				gameObjects[x][y]->symbol = current;
-				++mTotalPills;
-				break;
-			case GhostSpawn:
-				startPos[ghostpos] = getPosFromNode(x, y);
-				++ghostpos;
-				break;
 			case RedPacman:
 				gameObjects[x][y]->symbol = current;
 				gameObjects[x][y]->color = sf::Color::Red;
@@ -238,9 +217,6 @@ bool PacEngine::loadMap(const std::string& path)
 				gameObjects[x][y]->symbol = current;
 				gameObjects[x][y]->color = sf::Color::Blue;
 				break;
-			case Wall:
-				gameObjects[x][y]->symbol = current;
-				break;
 			}
 		}
 	}
@@ -251,33 +227,19 @@ bool PacEngine::loadMap(const std::string& path)
 	if (guys.size() >= 2)
 	{
 		for (int i = 1; i <= ghostpos; ++i)
-		{
 			guys[i]->entity.speed = 2;
-			guys[i]->entity.scared = 0;
-		}
 
 		if (ghostpos != startPos.size())
 			return false;
 	}
+
 	resetPositions();
-		return true;
+
+	return true;
 }
 
 void PacEngine::update()
 {
-	if(--mCherryCountDown==0)
-	{
-		gameObjects[cherryPos.x][cherryPos.y]->symbol = Empty;
-	}
-	if(mCherryCountDown <= -60*10)
-	{
-		cherryPos=sf::Vector2i(rand() % horizontal, rand() % vertical);
-		//if(gameObjects[cherryPos.x][cherryPos.y]==Empty)
-		//{
-		//	mCherryCountDown=10*60;
-		//	gameObjects[cherryPos.x][cherryPos.y]=Cherry;
-		//}
-	}
 
 	updatePac();
 
@@ -404,15 +366,11 @@ void PacEngine::updatePac()
 {
 	sf::Clock globalClock;
 	globalClock.restart();
-	//std::cout<<guys[0].position.x<<" "<<guys[0].position.y<<"\n";
-	guys[0]->entity.position.x += 16 * vertical;//as below, to avoid problems with negative numbers modulos
-	guys[0]->entity.position.x %= 16 * vertical;//for tunnel purposes
+	guys[0]->entity.position.x += 16 * vertical;//for tunnel purposes
+	guys[0]->entity.position.x %= 16 * vertical;
 
 	sf::Vector2i update;
-	//if (!spaceClicked)
 	update = guys[Pac]->entity.getVectorFromDirection();
-	//else
-	//	sf::Vector2i update = { 0, 0 };
 	guys[Pac]->entity.speed = 3;
 	
 	int i;
@@ -450,25 +408,11 @@ void PacEngine::updatePac()
 	if(guys[Pac]->entity.isAtNode())
 	{
 		sf::Vector2i t = guys[Pac]->entity.getNode();
-
-		//if (lastCookieEaten == GreenCookie) 
-		//	if (cookieTimer.getElapsedTime().asSeconds() >= 14)
-		//		guys[Pac]->entity.speed = 3;
-
-		//if (lastCookieEaten == BlueCookie)
-		//	if (cookieTimer.getElapsedTime().asSeconds() >= 7)
-		//		guys[Pac]->entity.speed = 3;
-
 		unsigned char & tmp = gameObjects[t.x][t.y]->symbol;
 
 		switch(tmp)
 		{
-		case Cherry:
-			tmp=Empty;
-			mEventsList.push_back(PacEvent(ScoreChange, 100));
-			break;
 		case RedCookie: 
-			//lastCookieEaten = RedCookie;
 			tmp=Empty;
 			mEventsList.push_back(PacEvent(ScoreChange, (ghostpos + 1)*2));
 			checkPills();
@@ -489,16 +433,6 @@ void PacEngine::updatePac()
 			checkPills();
 			overallSpeed -= (overallSpeed / 10);
 			break;
-		case Booster:
-			tmp=Empty;
-			mEventsList.push_back(PacEvent(ScoreChange, 50));
-			mGhostKillStreak=0;//reset kill streak
-			for(unsigned int i = 1; i <= startPos.size(); ++i)
-			{
-				if(getScareStatus(i) != Dead)
-					guys[i]->entity.scared=7*60;//7 secs, do not affect dead ghosts that try to go to respawn
-			}
-			break;
 		}
 		if(guys[Pac]->entity.nextMove != PacEntity::None &&
 			enterable(fetchTileAt(guys[Pac]->entity.getNode(),guys[Pac]->entity.getVectorFromNext())))
@@ -511,15 +445,7 @@ void PacEngine::updatePac()
 			guys[Pac]->entity.direction=PacEntity::None;
 		}
 		update=guys[Pac]->entity.getVectorFromDirection();
-	}//pac @ node
-
-
-		//for(; i < guys[Pac]->entity.speed; ++i)
-		//{
-		//	guys[Pac]->entity.position += update;
-		//	if (guys[Pac]->entity.isAtNode())
-		//		break;
-		//}
+	}
 }
 
 void PacEngine::checkCollisions()
@@ -528,16 +454,7 @@ void PacEngine::checkCollisions()
 	for(unsigned int i = 1; i <= startPos.size(); ++i)
 	{
 		if(guys[Pac]->entity.getNode() == guys[i]->entity.getNode())
-		{
-			if(guys[i]->entity.scared == 0) 
 				doit = true;
-
-			if(guys[i]->entity.scared > 0)
-			{
-				mEventsList.push_back(PacEvent(ScoreChange, ghostKillPts(mGhostKillStreak)));
-				guys[i]->entity.scared = -1;
-			}
-		}
 	}
 
 	if(!doit) 
@@ -558,29 +475,17 @@ void PacEngine::resetPositions()
 {
 	if (guys.size() >= 2)
 		for (unsigned int i = 1; i <= startPos.size(); i++)
-		{
 			guys[i]->entity.position = startPos[i - 1];
-		}
 
 	guys[Pac]->entity.position = startPacPos;
 	guys[Pac]->entity.direction = PacEntity::None;
 	guys[Pac]->entity.nextMove = PacEntity::None;
-
-	//if (guys.size() >= 2)
-	//	for(unsigned int i = 1; i <= startPos.size(); ++i)
-	//	{
-	//		guys[i]->entity.scared=0;
-	//	}
 }
 
 int PacEngine::fetchTileAt(sf::Vector2i pos,sf::Vector2i off)
 {
 	int x = pos.x + off.x;
 	int y = pos.y + off.y;
-	//tunnel special case
-	if(y == fitBetween(0, y, horizontal - 1) && (x == -1 || x == vertical) 
-		&& gameObjects[fitBetween(0, x, vertical - 1)][y]->symbol == Tunnel) 
-		return Empty;
 	//do not drive out of boundaries
 	if (y != fitBetween(0, y, horizontal - 1) || x != fitBetween(0, x, vertical - 1))
 	{
@@ -598,8 +503,7 @@ void PacEngine::checkPills()
 {
 	int tmp=0;
 	for(int y = 0; y < horizontal; ++y) 
-		for(int x = 0; x < vertical; ++x)
-		{
+		for(int x = 0; x < vertical; ++x){
 			if(gameObjects[x][y]->symbol == RedCookie ||
 				gameObjects[x][y]->symbol == BlueCookie ||
 				gameObjects[x][y]->symbol == GreenCookie)
@@ -608,101 +512,33 @@ void PacEngine::checkPills()
 
 	if(tmp == 0) 
 		mEventsList.push_back(PacEvent(PillsExhausted, 0));
-	//if(tmp < 0.3f  * mTotalPills)
-	//	if(guys.size() >= 2)
-	//		guys[Blinky]->entity.speed=3;
 }
 
 void PacEngine::updateGhost(int who)
 {
-	//std::cout<<who<<" "<<guys[who].scared<<std::endl;
-	if(guys[who]->entity.scared > 0)
-	{
-		--guys[who]->entity.scared;//go to 0, normal cooldown procedure
-	}
 	sf::Vector2i update = guys[who]->entity.getVectorFromDirection();
-
-	if(rand() % 3 && fetchTileAt(guys[0]->entity.getNode(),sf::Vector2i()) == Tunnel)
-		return;//30% chance to be paralyzed if pacman is in tunnel tile
-
-	for(int i = 0; i < guys[who]->entity.speed; ++i)
-	{
+	for(int i = 0; i < guys[who]->entity.speed; ++i){
 		guys[who]->entity.position += update;
 		if(guys[who]->entity.isAtNode())
 			break;
 	}
 
-	if(guys[who]->entity.isAtNode())
-	{
-		//see if we respawned:
-		if(guys[who]->entity.scared == -1)
-		{
-			if(guys[who]->entity.getNode() == startPos[who-1] / 16) 
-				guys[who]->entity.scared=0;// /16 to get node number from pixel pos
-		}
-
+	if(guys[who]->entity.isAtNode()){
 		//chose next move:
 		guys[who]->entity.target = getTarg(who);
 		guys[who]->entity.direction = getNextMove(guys[who]->entity);
-		//std::cout<<who<<"\n";
-	}//ghost @ node
+	}
 }
 
 sf::Vector2i PacEngine::getTarg(int who)
 {
-	//if(guys[who].scared != 0)//scare mode
-	//{
-
-	//	switch(who)
-	//	{
-	//	case Blinky:
-	//		return guys[Blinky].scared > 0 ? sf::Vector2i(0 , 0) : startPos[0] / 16;// /16 to get node
-	//		break;
-	//	case Inky:
-	//		return guys[Inky].scared > 0 ? sf::Vector2i(vertical , 0) : startPos[1]/16;
-	//		break;
-	//	case Pinky:
-	//		return guys[Pinky].scared > 0 ? sf::Vector2i(0 , horizontal) : startPos[2]/16;
-	//		break;
-	//	case Clyde:
-	//		return guys[Clyde].scared > 0 ? sf::Vector2i(vertical , horizontal) : startPos[3]/16;//more = escape, less = respawn
-	//		break;
-	//	}
-	//}
-
-	//if(who == Inky)
-	//{
-	//	switch(rand() % 3)
-	//	{
-	//	case 0 : who = Blinky;
-	//		break;
-	//	case 1: who = Pinky;
-	//		break;
-	//	case 2: who = Clyde;
-	//		break;
-	//	}
-	//}
-	//switch(who)
-	//{
-	//case Blinky:
-	//	return guys[Pac].getNode();
-	//case Pinky:
-	//	return guys[Pac].getNode()+ 2 * guys[Pac].getVectorFromDirection();
-	//case Clyde:
-	//	return ClydeChase(guys[Pac],guys[Clyde]) ? guys[Pac].getNode() : sf::Vector2i(vertical, horizontal);
-	//}
-
 	return guys[Pac]->entity.getNode();
-
-	//return sf::Vector2i();//default, shouldnt ever happen, silences vc++ unreasonable complains
 }
 
 PacEntity::eDirection PacEngine::getNextMove(PacEntity& ent)
 {
 	std::vector<sf::Vector2i> possibleNodes;
 	sf::Vector2i tmp=ent.getVectorFromDirection();
-
-	//if(tmp==sf::Vector2i())return PacEntity::Left;
 
 	if(enterable(fetchTileAt(ent.getNode(),sf::Vector2i(1,0))))
 		possibleNodes.push_back(ent.getNode()+sf::Vector2i(1,0));
@@ -741,15 +577,4 @@ PacEntity::eDirection PacEngine::getNextMove(PacEntity& ent)
 	{
 		return getDirFromVec(-1 * ent.getVectorFromDirection());
 	}
-}
-
-PacEngine::ScareStatus PacEngine::getScareStatus(int who) const
-{
-	if(guys[who]->entity.scared > 2 * 60)
-		return Scared;
-	if(guys[who]->entity.scared > 0)
-		return Blinking;
-	if(guys[who]->entity.scared == -1)
-		return Dead;
-	return Brave;
 }

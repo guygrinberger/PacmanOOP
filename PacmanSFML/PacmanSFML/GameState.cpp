@@ -2,10 +2,7 @@
 #include <SFML/Window/Event.hpp>
 #include "StateManager.h"
 #include "ScoreState.h"
-//#include "ErrState.h"
 #include "SpecialState.h"
-//#include "PauseState.h"
-//#include "QuitState.h"
 
 GameState::GameState():currentMap(0),mScore(0),mPack(0x0)
 {
@@ -17,31 +14,6 @@ GameState::GameState():currentMap(0),mScore(0),mPack(0x0)
 	rightEye.setTextureRect(sf::IntRect(0, 26, 4, 4));
 	leftEye.setOrigin(2.f, 2.f);
 	rightEye.setOrigin(2.f, 2.f);
-	//mAtlas.setSmooth(true);
-	/*for(int i = 0; i <= mEngine.ghostpos; ++i)
-	{
-		guys[i].setTexture(mAtlas);
-		guys[i].setOrigin(12.5f,12.5f);
-		guys[i].setTextureRect(sf::IntRect(25,26,25,25));
-	}
-
-	leftEye.setTexture(mAtlas);
-	rightEye.setTexture(mAtlas);
-	leftEye.setTextureRect(sf::IntRect(0,26,4,4));
-	rightEye.setTextureRect(sf::IntRect(0,26,4,4));
-	leftEye.setOrigin(2.f,2.f);
-	rightEye.setOrigin(2.f,2.f);
-
-	guys[0].setTextureRect(sf::IntRect(0,0,25,25));
-	
-	for(int i = 1; i <= mEngine.ghostpos; i++)
-		guys[i].setColor(sf::Color::Red);*/
-
-	/*guys[0].setColor(sf::Color::Yellow);*/
-	//guys[1].setColor(sf::Color::Red);
-	//guys[2].setColor(sf::Color::Red);
-	//guys[3].setColor(sf::Color::Red);
-	//guys[4].setColor(sf::Color::Red);
 
 	mMapNames[0] = "Level1.txt";
 	mMapNames[1] = "Level2.txt";
@@ -64,7 +36,6 @@ bool GameState::loadMap()
 
  	PacEngine mEngine;
 	mEngine.loadMap(mMapNames[currentMap - 1]);
-	//mEngine.cookieTimer.restart();
 	guys.resize(mEngine.ghostpos + 1);
 	mEngine.lastCookieEaten = 42;
 	for (int i = 0; i < mEngine.ghostpos + 1; ++i)
@@ -94,8 +65,6 @@ void GameState::run(PointerPack& pack)
 		mapOk=loadMap();
 		sound.loadFromFile("bad.ogg");
 		raMeod.setBuffer(sound);
-		sound.loadFromFile("shalom.ogg");
-		shalom.setBuffer(sound);
 		lives.setFont(*pack.Font);
 		score.setFont(*pack.Font);
 		level.setFont(*pack.Font);
@@ -170,7 +139,8 @@ void GameState::run(PointerPack& pack)
 					break;
 				}
 			}
-		}//seve
+		}
+
 		while(mEngine.getEvent(peve))
 		{
 			switch(peve.type)
@@ -195,18 +165,14 @@ void GameState::run(PointerPack& pack)
 				break;
 			}
 			level.setString("Level:" + std::to_string(currentMap));
-		}//peve
+		}
 		if (!mapOk)
 			break;
 
 		pack.Window->clear();
 		stock += clock.restart();
 
-		//while(stock >= delta)
-		//{
-		//	stock -= delta;
-			mEngine.update();
-		//}
+		mEngine.update();
 		drawAll();
 
 		pack.Window->draw(score);
@@ -238,36 +204,13 @@ void GameState::run(PointerPack& pack)
 	}
 }
 
-void GameState::drawCherry(int x,int y)
-{
-	sf::Sprite spr(mAtlas);
-	spr.setPosition(x*16.f,y*16.f);
-	spr.setTextureRect(sf::IntRect(75,26,25,25));
-	mPack->Window->draw(spr);
-}
-
-void GameState::drawBooster(int x,int y)
-{
-	sf::Vertex arr[4];
-	arr[0].position=sf::Vector2f(16*x+1.f,y*16+1.f);
-	arr[1].position=sf::Vector2f(16*x+1.f,y*16+10.f);
-	arr[2].position=sf::Vector2f(16*x+10.f,y*16+10.f);
-	arr[3].position=sf::Vector2f(16*x+10.f,y*16+1.f);
-	mPack->Window->draw(arr,4,sf::Quads);
-}
-
 void GameState::drawWall(int x, int y)
 {
-	sf::Vertex arr[4];
-	arr[0].position = sf::Vector2f(16 * x + 3.f, y * 16 + 3.f);
-	arr[1].position = sf::Vector2f(16 * x + 3.f, y * 16 + 7.f);
-	arr[2].position = sf::Vector2f(16 * x + 7.f, y * 16 + 7.f);
-	arr[3].position = sf::Vector2f(16 * x + 7.f, y * 16 + 3.f);
-
-	for (int i = 0; i < 4; i++)
-		arr[i].color = mEngine.gameObjects[x][y]->color;
-
-	mPack->Window->draw(arr, 4, sf::Quads);
+	sf::Sprite spr(mAtlas);
+	spr.setTextureRect(sf::IntRect(102, 0, 25, 25));
+	spr.setPosition(x*16.f, y*16.f);
+	spr.setColor(mEngine.gameObjects[x][y]->color);
+	mPack->Window->draw(spr);
 }
 
 void GameState::drawPill(int x,int y)
@@ -275,19 +218,9 @@ void GameState::drawPill(int x,int y)
 	sf::Sprite spr(mAtlas);
 	spr.setPosition(x*16.f, y*16.f + - 5);
 	spr.setTextureRect(sf::IntRect(75, 26, 25, 25));
+	spr.setScale(0.9, 0.9);
 	spr.setColor(mEngine.gameObjects[x][y]->color);
 	mPack->Window->draw(spr);
-
-	//sf::Vertex arr[4];
-	//arr[0].position=sf::Vector2f(16*x-6.f,y*16-6.f);
-	//arr[1].position=sf::Vector2f(16*x-6.f,y*16+23.f);
-	//arr[2].position=sf::Vector2f(16*x+23.f,y*16+23.f);
-	//arr[3].position=sf::Vector2f(16*x+23.f,y*16-6.f);
-
-	//for (int i = 0; i < 4; i++)
-	//	arr[i].color = mEngine.gameObjects[x][y]->color;
-
-	//mPack->Window->draw(arr,4,sf::Quads);
 }
 
 void GameState::drawGhosts()
@@ -299,22 +232,9 @@ void GameState::drawGhosts()
 		pacframe %= 4;
 
 		guys[0].setTextureRect(sf::IntRect(25*(3-pacframe),0,25,25));
-
-		//scared/nonscared color switches,
-		for(int i = 1; i <= mEngine.ghostpos; i++)
-			guys[i].setColor(mEngine.getScareStatus(i)==PacEngine::Brave ? mEngine.guys[i]->color : sf::Color::Blue);
-		/*guys[2].setColor(mEngine.getScareStatus(2)==PacEngine::Brave ? sf::Color::Red : sf::Color::Blue);
-		guys[3].setColor(mEngine.getScareStatus(3)==PacEngine::Brave ? sf::Color::Red : sf::Color::Blue);
-		guys[4].setColor(mEngine.getScareStatus(4)==PacEngine::Brave ? sf::Color::Red : sf::Color::Blue);*/
-
 		for (int i = 1; i <= mEngine.ghostpos; i++)
 		{
 			guys[i].setTextureRect(sf::IntRect(25+(pacframe%2)*25,26,25,25));
-
-			if(mEngine.getScareStatus(i)==PacEngine::Blinking)//blinking color switches
-			{
-				guys[i].setColor(pacframe % i ? sf::Color::White : sf::Color::Blue);
-			}
 		}
 	}
 }
@@ -336,12 +256,6 @@ void GameState::drawAll()
 		{
 			switch(mEngine.gameObjects[x][y]->symbol)
 			{
-			case PacEngine::Cherry:
-				drawCherry(x,y);
-				break;
-			case PacEngine::Booster:
-				drawBooster(x,y);
-				break;
 			case PacEngine::RedCookie:
 				drawPill(x,y);
 				break;
@@ -351,37 +265,28 @@ void GameState::drawAll()
 			case PacEngine::GreenCookie:
 				drawPill(x, y);
 				break;
+			//case PacEngine::RedWall:
+			//	drawWall(x, y);
+			//	break;
+			//case PacEngine::BlueWall:
+			//	drawWall(x, y);
+			//	break;
+			//case PacEngine::GreenWall:
+			//	drawWall(x, y);
+			//	break;
 			}
 		}
 
 	mPack->Window->draw(guys[0]);
-	//fake pacmans on the right and left of map for tunnel smooth passing
-	/*guys[0].move(16.f*28.f,0.f);
-	mPack->Window->draw(guys[0]);
-	guys[0].move(-2.f*16.f*28.f,0.f);
-	mPack->Window->draw(guys[0]);*/
 	for (int i = 1; i <= mEngine.ghostpos; i++)
 	{
-		if (mEngine.getScareStatus(i) != PacEngine::Dead)
-		{
-			mPack->Window->draw(guys[i]);
-		}
-
+		mPack->Window->draw(guys[i]);
 		leftEye.setPosition(guys[i].getPosition());
 		rightEye.setPosition(guys[i].getPosition());
 		leftEye.move(-4.f,-3.f);
 		rightEye.move(4.f,-3.f);
-
-		if(mEngine.getScareStatus(i)==PacEngine::Brave)
-		{
-			leftEye.setRotation(mEngine.getRotation(i));
-			rightEye.setRotation(mEngine.getRotation(i));
-		}
-		else
-		{
-			leftEye.setRotation(90);//90 is down in 2d coord system with reversed y axis
-			rightEye.setRotation(90);
-		}
+		leftEye.setRotation(mEngine.getRotation(i));
+		rightEye.setRotation(mEngine.getRotation(i));
 		mPack->Window->draw(leftEye);
 		mPack->Window->draw(rightEye);
 	}

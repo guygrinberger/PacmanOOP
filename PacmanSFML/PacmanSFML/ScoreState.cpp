@@ -12,8 +12,6 @@ ScoreState::ScoreState(int score) : mWritingTo(-1),mScore(score)
 	for(int i = 0; i < 10; ++i)
 	{
 		mLines[i].setCharacterSize(20);
-		//mLines[i].setPosition(100.f,25.f+25.f*i);
-		//int tmp;
 		std::string temp;
 		file>>temp;
 		file>>tmpscores[i]; 
@@ -25,7 +23,6 @@ ScoreState::ScoreState(int score) : mWritingTo(-1),mScore(score)
 		{
 			sf::Text temp;
 			temp.setCharacterSize(20);
-			//temp.setPosition(100.f,25.f+25.f*i);
 			temp.setString(" " + std::to_string(mScore));
 			mWritingTo=i;
 			mLines.insert(mLines.begin()+i,temp);

@@ -7,7 +7,6 @@ class PacEntity
 public:
 	enum eDirection{Up, Down, Left, Right, None = 8};
 	double speed;
-	int scared;
 	sf::Vector2i position;
 	sf::Vector2i target;
 	eDirection direction;
