@@ -379,8 +379,6 @@ void PacEngine::updatePac()
 		guys[Pac]->entity.speed = 0;
 	else if(!spaceClicked && lastCookieEaten != 42)
 		guys[Pac]->entity.speed = overallSpeed;
-	else
-		guys[Pac]->entity.speed = 3;
 
 	for(i = 0; i < guys[Pac]->entity.speed; ++i)
 	{
@@ -473,6 +471,7 @@ void PacEngine::checkCollisions()
 
 void PacEngine::resetPositions()
 {
+	lastCookieEaten = 42;
 	if (guys.size() >= 2)
 		for (unsigned int i = 1; i <= startPos.size(); i++)
 			guys[i]->entity.position = startPos[i - 1];
