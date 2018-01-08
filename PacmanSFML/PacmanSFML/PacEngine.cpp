@@ -71,20 +71,6 @@ PacEntity::eDirection getDirFromVec(sf::Vector2i from)
 	return PacEntity::Right; 
 }
 
-int ghostKillPts(int& number)
-{
-	++number;
-	switch(number)
-	{
-	case 1:return 200;
-	case 2:return 400;
-	case 3:return 800;
-	case 4:return 1600;
-	}
-	return -10000000;//negative to indicate errors
-}
-
-
 PacEngine::PacEngine():mLives(3)
 {
 
@@ -263,100 +249,6 @@ void PacEngine::setPacDirection(PacEntity::eDirection direction)
 {
 		guys[Pac]->entity.nextMove=direction;
 }
-
-void PacEngine::makeWallsMap(sf::RenderTarget& target)
-{
-	sf::Vertex arr[4];
-
-	arr[0].color=sf::Color::Blue;
-	arr[1].color=sf::Color::Blue;
-	arr[2].color=sf::Color::Blue;
-	arr[3].color=sf::Color::Blue;
-
-	for(int x = 0; x < vertical - 1; ++x)
-	{
-		if((gameObjects[x][0]->symbol == RedWall) && (gameObjects[x+1][0]->symbol == RedWall))
-			drawHorizontalLine(target, x, x + 1, 0, sf::Color::White);
-
-		if((gameObjects[x][horizontal - 1]->symbol == RedWall) && (gameObjects[x + 1][horizontal - 1]->symbol == RedWall))
-			drawHorizontalLine(target, x, x + 1, horizontal - 1, sf::Color::White);
-
-		if ((gameObjects[x][0]->symbol == GreenWall) && (gameObjects[x + 1][0]->symbol == GreenWall))
-			drawHorizontalLine(target, x, x + 1, 0, sf::Color::White);
-
-		if ((gameObjects[x][horizontal - 1]->symbol == GreenWall) && (gameObjects[x + 1][horizontal - 1]->symbol == GreenWall))
-			drawHorizontalLine(target, x, x + 1, horizontal - 1, sf::Color::White);
-
-		if ((gameObjects[x][0]->symbol == BlueWall) && (gameObjects[x + 1][0]->symbol == BlueWall))
-			drawHorizontalLine(target, x, x + 1, 0, sf::Color::White);
-
-		if ((gameObjects[x][horizontal - 1]->symbol == BlueWall) && (gameObjects[x + 1][horizontal - 1]->symbol == BlueWall))
-			drawHorizontalLine(target, x, x + 1, horizontal - 1, sf::Color::White);
-	}
-
-	for(int y = 0; y < horizontal - 1; ++y)
-	{
-		if((gameObjects[0][y]->symbol == RedWall) && (gameObjects[0][y+1]->symbol == RedWall))
-			drawVerticalLine(target, y, y + 1, 0, sf::Color::White);
-
-		if((gameObjects[vertical - 1][y]->symbol == RedWall) && (gameObjects[vertical - 1][y+1]->symbol == RedWall))
-			drawVerticalLine(target, y , y+1 ,vertical - 1, sf::Color::White);
-
-		if ((gameObjects[0][y]->symbol == GreenWall) && (gameObjects[0][y + 1]->symbol == GreenWall))
-			drawVerticalLine(target, y, y + 1, 0, sf::Color::White);
-
-		if ((gameObjects[vertical - 1][y]->symbol == GreenWall) && (gameObjects[vertical - 1][y + 1]->symbol == GreenWall))
-			drawVerticalLine(target, y, y + 1, vertical - 1, sf::Color::White);
-
-		if ((gameObjects[0][y]->symbol == BlueWall) && (gameObjects[0][y + 1]->symbol == BlueWall))
-			drawVerticalLine(target, y, y + 1, 0, sf::Color::White);
-
-		if ((gameObjects[vertical - 1][y]->symbol == BlueWall) && (gameObjects[vertical - 1][y + 1]->symbol == BlueWall))
-			drawVerticalLine(target, y, y + 1, vertical - 1, sf::Color::White);
-	}
-
-	for(int x = 1; x < vertical - 1; ++x) 
-		for(int y = 1; y < horizontal - 1; ++y)
-		{
-			if(gameObjects[x][y]->symbol == RedWall)
-			{
-				if(gameObjects[x-1][y]->symbol == RedWall)
-					drawHorizontalLine(target,x-1,x,y, sf::Color::Red);
-				if(gameObjects[x+1][y]->symbol == RedWall)
-					drawHorizontalLine(target,x+1,x,y, sf::Color::Red);
-				if(gameObjects[x][y-1]->symbol == RedWall)
-					drawVerticalLine(target,y-1,y,x, sf::Color::Red);
-				if(gameObjects[x][y+1]->symbol == RedWall)
-					drawVerticalLine(target,y+1,y,x, sf::Color::Red);
-			}
-
-			if (gameObjects[x][y]->symbol == GreenWall)
-			{
-				if (gameObjects[x - 1][y]->symbol == GreenWall)
-					drawHorizontalLine(target, x - 1, x, y, sf::Color::Green);
-				if (gameObjects[x + 1][y]->symbol == GreenWall)
-					drawHorizontalLine(target, x + 1, x, y, sf::Color::Green);
-				if (gameObjects[x][y - 1]->symbol == GreenWall)
-					drawVerticalLine(target, y - 1, y, x, sf::Color::Green);
-				if (gameObjects[x][y + 1]->symbol == GreenWall)
-					drawVerticalLine(target, y + 1, y, x, sf::Color::Green);
-			}
-
-			if (gameObjects[x][y]->symbol == BlueWall)
-			{
-				if (gameObjects[x - 1][y]->symbol == BlueWall)
-					drawHorizontalLine(target, x - 1, x, y, sf::Color::Blue);
-				if (gameObjects[x + 1][y]->symbol == BlueWall)
-					drawHorizontalLine(target, x + 1, x, y, sf::Color::Blue);
-				if (gameObjects[x][y - 1]->symbol == BlueWall)
-					drawVerticalLine(target, y - 1, y, x, sf::Color::Blue);
-				if (gameObjects[x][y + 1]->symbol == BlueWall)
-					drawVerticalLine(target, y + 1, y, x, sf::Color::Blue);
-			}
-		}//for x for y
-}
-
-
 
 void PacEngine::updatePac()
 {

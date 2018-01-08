@@ -244,7 +244,6 @@ void GameState::drawGhosts()
 void GameState::drawAll()
 {
 	drawGhosts();
-	//mEngine.makeWallsMap(*mPack->Window);
 
 	for (int i = 0; i < mEngine.ghostpos + 1; i++)
 	{
