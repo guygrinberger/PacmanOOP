@@ -71,10 +71,7 @@ PacEntity::eDirection getDirFromVec(sf::Vector2i from)
 	return PacEntity::Right; 
 }
 
-PacEngine::PacEngine():mLives(3)
-{
-
-}
+PacEngine::PacEngine()  :mLives(3) {}
 
 sf::Vector2f PacEngine::getPosition(int who)
 {
@@ -203,12 +200,10 @@ bool PacEngine::loadMap(const std::string& path)
 		}
 	}
 
-	guys[Pac]->entity.speed = 3;
 	guys[Pac]->entity.direction = PacEntity::Right;
 
-	if (guys.size() >= 2)
-	{
-		for (int i = 1; i <= ghostpos; ++i)
+	if (guys.size() >= 2){
+		for (int i = 0; i <= ghostpos; ++i)
 			guys[i]->entity.speed = 3;
 
 		if (ghostpos != startPos.size())
@@ -222,7 +217,6 @@ bool PacEngine::loadMap(const std::string& path)
 
 void PacEngine::update()
 {
-
 	updatePac();
 
 	for(unsigned int i = 1; i <= startPos.size(); ++i)
@@ -240,9 +234,7 @@ bool PacEngine::getEvent(PacEvent& event)
 		return true;
 	}
 	else
-	{
 		return false;
-	}
 }
 
 void PacEngine::setPacDirection(PacEntity::eDirection direction)
@@ -253,15 +245,10 @@ void PacEngine::setPacDirection(PacEntity::eDirection direction)
 void PacEngine::updatePac()
 {
 	sf::Clock globalClock;
-	globalClock.restart();
-	guys[0]->entity.position.x += 16 * vertical;//for tunnel purposes
-	guys[0]->entity.position.x %= 16 * vertical;
-
-	sf::Vector2i update;
-	update = guys[Pac]->entity.getVectorFromDirection();
-	guys[Pac]->entity.speed = 3;
-	
+	sf::Vector2i update = guys[Pac]->entity.getVectorFromDirection();
 	int i;
+	globalClock.restart();
+	guys[Pac]->entity.speed = 3;
 
 	if (spaceClicked)
 		guys[Pac]->entity.speed = 0;
@@ -300,7 +287,7 @@ void PacEngine::updatePac()
 		{
 		case RedCookie: 
 			tmp=Empty;
-			mEventsList.push_back(PacEvent(ScoreChange, (ghostpos + 1)*2));
+			mEventsList.push_back(PacEvent(ScoreChange, (ghostpos + 1) * 2));
 			checkPills();
 			break;
 		case GreenCookie:

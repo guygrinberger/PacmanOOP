@@ -23,7 +23,7 @@ class PacEngine
 public:
 	enum TileType
 	{
-		Empty = '8',
+		Empty = '1',
 		RedPacman = '@',
 		RedElf = '%',
 		RedCookie = '*',

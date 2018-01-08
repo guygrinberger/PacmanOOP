@@ -22,14 +22,12 @@ GameState::GameState():currentMap(0),mScore(0),mPack(0x0)
 
 bool GameState::loadMap()
 {
-	if(currentMap == 3)
-	{
+	if(currentMap == 3){
 		mPack->Manager->pushTop(new ScoreState(mScore));
 		return false;
 	}
 
-	if(!mEngine.loadMap(mMapNames[currentMap++]))
-	{
+	if(!mEngine.loadMap(mMapNames[currentMap++])){
 		mPack->Manager->pushTop(new ErrState("Failed Map Loading"));
 		return false;
 	}
@@ -38,8 +36,7 @@ bool GameState::loadMap()
 	mEngine.loadMap(mMapNames[currentMap - 1]);
 	guys.resize(mEngine.ghostpos + 1);
 	mEngine.lastCookieEaten = 42;
-	for (int i = 0; i < mEngine.ghostpos + 1; ++i)
-	{
+	for (int i = 0; i < mEngine.ghostpos + 1; ++i){
 		guys[i].setTexture(mAtlas);
 		guys[i].setOrigin(12.5f, 12.5f);
 		guys[i].setTextureRect(sf::IntRect(25, 26, 25, 25));
@@ -48,9 +45,7 @@ bool GameState::loadMap()
 	guys[0].setTextureRect(sf::IntRect(0, 0, 25, 25));
 
 	for (int i = 1; i <= mEngine.ghostpos; i++)
-	{	
 		guys[i].setColor(mEngine.guys[i]->color);
-	}
 
 	guys[0].setColor(mEngine.gameObjects[mEngine.publicPacPos.x][mEngine.publicPacPos.y]->color);
 
@@ -189,13 +184,9 @@ void GameState::run(PointerPack& pack)
 		pack.Window->draw(speed);
 
 		if (mEngine.lastCookieEaten == mEngine.GreenCookie)
-		{
 				time.setString("Time:" + std::to_string(14 - int(mEngine.cookieTimer.getElapsedTime().asSeconds())));
-		}
 		else if (mEngine.lastCookieEaten == mEngine.BlueCookie)
-		{
 				time.setString("Time:" + std::to_string(7 - int(mEngine.cookieTimer.getElapsedTime().asSeconds())));
-		}
 		else
 			time.setString("Time:0");
 
@@ -233,8 +224,7 @@ void GameState::drawGhosts()
 
 		guys[0].setTextureRect(sf::IntRect(25*(3-pacframe),0,25,25));
 		guys[0].setScale(0.5625, 0.5625);
-		for (int i = 1; i <= mEngine.ghostpos; i++)
-		{
+		for (int i = 1; i <= mEngine.ghostpos; i++){
 			guys[i].setTextureRect(sf::IntRect(25+(pacframe%2)*25,26,25,25));
 			guys[i].setScale(0.5625, 0.5625);
 		}
@@ -246,15 +236,12 @@ void GameState::drawAll()
 	drawGhosts();
 
 	for (int i = 0; i < mEngine.ghostpos + 1; i++)
-	{
 		guys[i].setPosition(mEngine.getPosition(i));
-	}
 
 	guys[0].setRotation(mEngine.getRotation(0));
 
 	for(int x = 0; x < mEngine.vertical; ++x)
-		for(int y = 0; y < mEngine.horizontal; ++y)
-		{
+		for(int y = 0; y < mEngine.horizontal; ++y){
 			switch(mEngine.gameObjects[x][y]->symbol)
 			{
 			case PacEngine::RedCookie:
