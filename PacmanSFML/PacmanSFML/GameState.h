@@ -4,6 +4,9 @@
 #include "State.h"
 #include "PointerPack.h"
 #include <math.h>
+#include <iostream>
+#include <string>
+#include <fstream>
 #include <SFML/Graphics/RenderTexture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/System/Clock.hpp>
@@ -28,8 +31,8 @@ private:
 	bool mapOk;
 	sf::Texture mAtlas;
 	PointerPack * mPack;
-	int currentMap, mScore, pacframe;
-	std::string mMapNames[8];
+	int currentMap, mScore, pacframe, numOfFiles;
+	vector<std::string> mMapNames;
 	PacEngine mEngine;
 	sf::Sprite leftEye, rightEye;
 	vector<sf::Sprite> guys;

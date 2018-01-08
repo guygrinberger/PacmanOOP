@@ -15,14 +15,24 @@ GameState::GameState():currentMap(0),mScore(0),mPack(0x0)
 	leftEye.setOrigin(2.f, 2.f);
 	rightEye.setOrigin(2.f, 2.f);
 
-	mMapNames[0] = "Level1.txt";
-	mMapNames[1] = "Level2.txt";
-	mMapNames[2] = "Level3.txt";
+	std::ifstream file;
+	std::string level = "Level1.txt";
+	numOfFiles = 1;
+	file.open(level);
+	while(file.good()){
+		mMapNames.resize(numOfFiles);
+		mMapNames[numOfFiles - 1] = level;
+		file.close();
+		numOfFiles++;
+		level = ("Level" + std::to_string(numOfFiles) + ".txt");
+		file.open(level);
+	}
+	numOfFiles--;
 }
 
 bool GameState::loadMap()
 {
-	if(currentMap == 3){
+	if(currentMap == numOfFiles){
 		mPack->Manager->pushTop(new ScoreState(mScore));
 		return false;
 	}

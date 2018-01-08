@@ -166,6 +166,7 @@
     <Text Include="Level1.txt" />
     <Text Include="Level2.txt" />
     <Text Include="Level3.txt" />
+    <Text Include="Level4.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="bibreman.png" />
