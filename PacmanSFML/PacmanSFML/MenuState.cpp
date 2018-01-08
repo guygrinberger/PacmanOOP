@@ -10,7 +10,7 @@ void MenuState::run(PointerPack& pack)
 {
 	mAtlas.loadFromFile("bibreman.png");
 	yoram.setTexture(mAtlas);
-	yoram.setPosition(-50.f, 320.f);
+	yoram.setPosition(10.f, 190.f);
 	mTitle.setFont(*pack.Font);
 	mPlay.setFont(*pack.Font);
 	mHigh.setFont(*pack.Font);

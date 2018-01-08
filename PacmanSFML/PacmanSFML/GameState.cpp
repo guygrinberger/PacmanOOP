@@ -207,7 +207,7 @@ void GameState::run(PointerPack& pack)
 void GameState::drawWall(int x, int y)
 {
 	sf::Sprite spr(mAtlas);
-	spr.setTextureRect(sf::IntRect(102, 0, 25, 25));
+	spr.setTextureRect(sf::IntRect(102, 0, 16, 16));
 	spr.setPosition(x*16.f, y*16.f);
 	spr.setColor(mEngine.gameObjects[x][y]->color);
 	mPack->Window->draw(spr);
@@ -216,9 +216,9 @@ void GameState::drawWall(int x, int y)
 void GameState::drawPill(int x,int y)
 {
 	sf::Sprite spr(mAtlas);
-	spr.setPosition(x*16.f, y*16.f + - 5);
+	spr.setPosition(x*16.f, y*16.);
 	spr.setTextureRect(sf::IntRect(75, 26, 25, 25));
-	spr.setScale(0.9, 0.9);
+	spr.setScale(0.5625, 0.5625);
 	spr.setColor(mEngine.gameObjects[x][y]->color);
 	mPack->Window->draw(spr);
 }
@@ -232,9 +232,11 @@ void GameState::drawGhosts()
 		pacframe %= 4;
 
 		guys[0].setTextureRect(sf::IntRect(25*(3-pacframe),0,25,25));
+		guys[0].setScale(0.5625, 0.5625);
 		for (int i = 1; i <= mEngine.ghostpos; i++)
 		{
 			guys[i].setTextureRect(sf::IntRect(25+(pacframe%2)*25,26,25,25));
+			guys[i].setScale(0.5625, 0.5625);
 		}
 	}
 }
@@ -242,7 +244,7 @@ void GameState::drawGhosts()
 void GameState::drawAll()
 {
 	drawGhosts();
-	mEngine.makeWallsMap(*mPack->Window);
+	//mEngine.makeWallsMap(*mPack->Window);
 
 	for (int i = 0; i < mEngine.ghostpos + 1; i++)
 	{
@@ -265,15 +267,15 @@ void GameState::drawAll()
 			case PacEngine::GreenCookie:
 				drawPill(x, y);
 				break;
-			//case PacEngine::RedWall:
-			//	drawWall(x, y);
-			//	break;
-			//case PacEngine::BlueWall:
-			//	drawWall(x, y);
-			//	break;
-			//case PacEngine::GreenWall:
-			//	drawWall(x, y);
-			//	break;
+			case PacEngine::RedWall:
+				drawWall(x, y);
+				break;
+			case PacEngine::BlueWall:
+				drawWall(x, y);
+				break;
+			case PacEngine::GreenWall:
+				drawWall(x, y);
+				break;
 			}
 		}
 

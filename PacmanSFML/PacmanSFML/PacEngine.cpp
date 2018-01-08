@@ -38,6 +38,7 @@ void drawVerticalLine(sf::RenderTarget& rt,int y1,int y2,int x, sf::Color wallCo
 	arr[1].position=sf::Vector2f(16.f*(x+0.5f)+1.5f,16.f*(y1+0.5f));
 	arr[2].position=sf::Vector2f(16.f*(x+0.5f)+1.5f,16.f*(y2+0.5f));
 	arr[3].position=sf::Vector2f(16.f*(x+0.5f)-1.5f,16.f*(y2+0.5f));
+
 	rt.draw(arr,4,sf::Quads);
 }
 
@@ -222,7 +223,7 @@ bool PacEngine::loadMap(const std::string& path)
 	if (guys.size() >= 2)
 	{
 		for (int i = 1; i <= ghostpos; ++i)
-			guys[i]->entity.speed = 2;
+			guys[i]->entity.speed = 3;
 
 		if (ghostpos != startPos.size())
 			return false;
