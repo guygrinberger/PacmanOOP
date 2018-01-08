@@ -2,6 +2,7 @@
 #include "State.h"
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Sprite.hpp>
+#include <SFML/System/Clock.hpp>
 
 class MenuState : public State
 {
@@ -11,9 +12,10 @@ public:
 
 private:
 	sf::Text mTitle,
-			 mPlay,
-			 mHigh,
-			 mQuit;
+			mPlay,
+			mHigh,
+			mQuit,
+			mMapMaker;
 	sf::Sprite yoram;
 	sf::Texture mAtlas;
 };

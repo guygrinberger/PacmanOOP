@@ -5,7 +5,7 @@ StateManager::StateManager()
 {
 	mWindow.create(sf::VideoMode(700, 700),"Pacman",sf::Style::Close|sf::Style::Titlebar);
 	mWindow.setFramerateLimit(60);//60 fps max
-	mFont.loadFromFile("DejaVuSans.ttf");
+	mFont.loadFromFile("Endless Wall.ttf");
 	mPack.Font = &mFont;
 	mPack.Manager = this;
 	mPack.Window = &mWindow;
@@ -20,7 +20,7 @@ StateManager::~StateManager()
 void StateManager::popTop(int amount)
 {
 	amount = std::min(amount, static_cast<int>(mStates.size()));
-	for(int i=0; i < amount ;++i)
+	for(int i = 0; i < amount ;++i)
 	{
 		mClear.push(mStates.top());
 		mStates.pop();
