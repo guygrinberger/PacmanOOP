@@ -22,7 +22,7 @@ void MenuState::run(PointerPack& pack)
 	mQuit.setFont(*pack.Font);
 
 	mTitle.setString("Pacman Biberman");
-	mPlay.setString("Press P to play!");
+	mPlay.setString("Press P to play");
 	mHigh.setString("Press H to highscors");
 	mQuit.setString("Press Q to quit");
 

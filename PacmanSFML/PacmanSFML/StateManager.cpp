@@ -3,7 +3,7 @@
 
 StateManager::StateManager()
 {
-	mWindow.create(sf::VideoMode(650, 700),"Pacman",sf::Style::Close|sf::Style::Titlebar);
+	mWindow.create(sf::VideoMode(700, 700),"Pacman",sf::Style::Close|sf::Style::Titlebar);
 	mWindow.setFramerateLimit(60);//60 fps max
 	mFont.loadFromFile("DejaVuSans.ttf");
 	mPack.Font = &mFont;

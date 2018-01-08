@@ -81,8 +81,6 @@ void GameState::run(PointerPack& pack)
 		speed.setPosition(0.f, 650.f);
 		time.setPosition(200.f, 650.f);
 	}
-
-	sf::Time delta(sf::seconds(1.f/60.f)),stock;
 	sf::Clock clock;
 	sf::Event seve;
 	PacEvent peve;
@@ -165,7 +163,6 @@ void GameState::run(PointerPack& pack)
 			break;
 
 		pack.Window->clear();
-		stock += clock.restart();
 
 		mEngine.update();
 		drawAll();
@@ -174,11 +171,11 @@ void GameState::run(PointerPack& pack)
 		pack.Window->draw(lives);
 		pack.Window->draw(level);
 		if (mEngine.guys[0]->entity.speed > 3)
-			speed.setColor(sf::Color::Green);
+			speed.setFillColor(sf::Color::Green);
 		 else if (mEngine.guys[0]->entity.speed < 3)
-			speed.setColor(sf::Color::Red);
+			speed.setFillColor(sf::Color::Red);
 		 else
-			 speed.setColor(sf::Color::White);
+			 speed.setFillColor(sf::Color::White);
 
 		speed.setString("Speed:" + std::to_string(mEngine.guys[0]->entity.speed));
 		pack.Window->draw(speed);
@@ -207,7 +204,7 @@ void GameState::drawWall(int x, int y)
 void GameState::drawPill(int x,int y)
 {
 	sf::Sprite spr(mAtlas);
-	spr.setPosition(x*16.f, y*16.);
+	spr.setPosition(x*16.f, y*16.f);
 	spr.setTextureRect(sf::IntRect(75, 26, 25, 25));
 	spr.setScale(0.5625, 0.5625);
 	spr.setColor(mEngine.gameObjects[x][y]->color);

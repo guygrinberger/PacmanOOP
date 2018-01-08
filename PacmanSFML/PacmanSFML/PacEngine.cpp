@@ -13,35 +13,6 @@ bool enterable(unsigned char number)
 	return true;
 }
 
-void drawHorizontalLine(sf::RenderTarget& rt,int x1,int x2,int y, sf::Color wallColor)
-{
-	sf::Vertex arr[4];
-	arr[0].color = wallColor;
-	arr[1].color = wallColor;
-	arr[2].color = wallColor;
-	arr[3].color = wallColor;
-	arr[0].position=sf::Vector2f(16.f*(x1+0.5f),16.f*(y+0.5f)-1.5f);
-	arr[1].position=sf::Vector2f(16.f*(x1+0.5f),16.f*(y+0.5f)+1.5f);
-	arr[2].position=sf::Vector2f(16.f*(x2+0.5f),16.f*(y+0.5f)+1.5f);
-	arr[3].position=sf::Vector2f(16.f*(x2+0.5f),16.f*(y+0.5f)-1.5f);
-	rt.draw(arr,4,sf::Quads);
-}
-
-void drawVerticalLine(sf::RenderTarget& rt,int y1,int y2,int x, sf::Color wallColor)
-{
-	sf::Vertex arr[4];
-	arr[0].color = wallColor;
-	arr[1].color = wallColor;
-	arr[2].color = wallColor;
-	arr[3].color = wallColor;
-	arr[0].position=sf::Vector2f(16.f*(x+0.5f)-1.5f,16.f*(y1+0.5f));
-	arr[1].position=sf::Vector2f(16.f*(x+0.5f)+1.5f,16.f*(y1+0.5f));
-	arr[2].position=sf::Vector2f(16.f*(x+0.5f)+1.5f,16.f*(y2+0.5f));
-	arr[3].position=sf::Vector2f(16.f*(x+0.5f)-1.5f,16.f*(y2+0.5f));
-
-	rt.draw(arr,4,sf::Quads);
-}
-
 int fitBetween(int a,int b,int c)
 {
 	return std::min(std::max(a,b),c);

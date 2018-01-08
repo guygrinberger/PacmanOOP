@@ -3,6 +3,7 @@
 #include "PacEngine.h"
 #include "State.h"
 #include "PointerPack.h"
+#include <math.h>
 #include <SFML/Graphics/RenderTexture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/System/Clock.hpp>
