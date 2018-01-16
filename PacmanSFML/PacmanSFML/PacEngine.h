@@ -7,6 +7,9 @@
 #include <string>
 #include <deque>
 #include <vector>
+#include <stdlib.h>
+#include <time.h>
+#include <ctime>
 using std::vector;
 
 enum eEntsID { Pac = 0 };
@@ -16,6 +19,7 @@ struct object
 	unsigned char symbol;
 	sf::Color color;
 	PacEntity entity;
+	bool isSmart = true;
 };
 
 class PacEngine
@@ -62,6 +66,7 @@ private:
 	void resetPositions();
 	void checkPills();
 	void updateGhost(int who);
+	PacEntity::eDirection getRandMove();
 	int fetchTileAt(sf::Vector2i pos,sf::Vector2i off);
 	PacEntity::eDirection getNextMove(PacEntity& ent);
 	sf::Vector2i getTarg(int who);

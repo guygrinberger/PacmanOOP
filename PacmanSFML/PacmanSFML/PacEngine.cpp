@@ -56,6 +56,7 @@ float PacEngine::getRotation(int who)
 
 bool PacEngine::loadMap(const std::string& path)
 {
+	srand((unsigned)time(NULL));
 	mTotalPills = 0;
 	ghostpos = 0;
 	startPos.resize(0);
@@ -170,12 +171,16 @@ bool PacEngine::loadMap(const std::string& path)
 			}
 		}
 	}
-
+	
 	guys[Pac]->entity.direction = PacEntity::Right;
-
+	int random = (rand() % guys.size()) + 1;
 	if (guys.size() >= 2){
 		for (int i = 0; i <= ghostpos; ++i)
+		{
 			guys[i]->entity.speed = 3;
+			if (random % 2 == 0)
+				guys[i]->isSmart = false;
+		}
 
 		if (ghostpos != startPos.size())
 			return false;
@@ -372,10 +377,36 @@ void PacEngine::updateGhost(int who)
 
 	if(guys[who]->entity.isAtNode()){
 		//chose next move:
-		guys[who]->entity.target = getTarg(who);
-		guys[who]->entity.direction = getNextMove(guys[who]->entity);
+		if (guys[who]->isSmart == true) {
+			guys[who]->entity.target = getTarg(who);
+			guys[who]->entity.direction = getNextMove(guys[who]->entity);
+		}
+		else {
+			guys[who]->entity.direction= getRandMove();
+		}
 	}
 }
+
+PacEntity::eDirection PacEngine::getRandMove()
+{
+	int random = ((rand() % 4));
+	switch (random)
+	{
+	case 0:
+		return PacEntity::Right;
+		break;
+	case 1:
+		 return PacEntity::Left;
+		break;
+	case 2:
+		return PacEntity::Up;
+		break;
+	case 3:
+		return PacEntity::Down;
+		break;
+	}
+}
+
 
 sf::Vector2i PacEngine::getTarg(int who)
 {

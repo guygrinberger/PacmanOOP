@@ -3,9 +3,9 @@
 
 StateManager::StateManager()
 {
-	mWindow.create(sf::VideoMode(700, 700),"Pacman",sf::Style::Close|sf::Style::Titlebar);
+	mWindow.create(sf::VideoMode(650, 650),"Pacman",sf::Style::Close|sf::Style::Titlebar);
 	mWindow.setFramerateLimit(60);//60 fps max
-	mFont.loadFromFile("Endless Wall.ttf");
+	mFont.loadFromFile("DeJaVuSans.ttf");
 	mPack.Font = &mFont;
 	mPack.Manager = this;
 	mPack.Window = &mWindow;
