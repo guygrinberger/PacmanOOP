@@ -22,12 +22,13 @@ public:
 	void moveIt(int saveChoose, int whatSelected, int & selectedItemIndex);
 
 private:
+	float geraX = -200, guyX = 520;
 	sf::Font font;
-	sf::Texture BG;
-	sf::Sprite background;	
+	sf::Texture BG, geraT, guyT;
+	sf::Sprite background, gera, guy;
 	std::unique_ptr<MenuState> Menu;
 	sf::Text menu[MAX_NUMBER_OF_ITEMS];
-	bool samePlace = false;
+	bool samePlace = false, geraInPlace = false, guyInPlace = false;
 	unsigned int sizeRow, sizeCol;
 	int saveChoose = 0, selectedItemIndex, whatSelected = 0;
 };

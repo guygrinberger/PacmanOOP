@@ -75,7 +75,6 @@ bool PacEngine::loadMap(const std::string& path)
 	horizontal = atoi(line.c_str());
 	getline(file, line);
 	vertical = atoi(line.c_str());
-	
 
 	maxBoardSize = std::max(vertical, horizontal);
 	gameSettings::getInstance().setSclaeSize(720, maxBoardSize);

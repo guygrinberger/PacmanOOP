@@ -200,7 +200,6 @@
   <ItemGroup>
     <Text Include="High.txt" />
     <Text Include="Level1.txt" />
-    <Text Include="Level15.txt" />
     <Text Include="Level2.txt" />
     <Text Include="Level3.txt" />
     <Text Include="Level4.txt" />

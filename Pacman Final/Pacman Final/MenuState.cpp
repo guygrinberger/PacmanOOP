@@ -8,9 +8,17 @@
 MenuState::MenuState(float width, float height){
 	font.loadFromFile("Endless Wall.ttf");
 	BG.loadFromFile("pacmoon.jpg", sf::IntRect(0, 0, pic, pic));
+	geraT.loadFromFile("gera.png");
+	guyT.loadFromFile("guy.png");
 	background.setColor(sf::Color(255, 255, 255, 128));
 	background.setTexture(BG);
+	gera.setTexture(geraT);
+	guy.setTexture(guyT);
 	background.setScale((float)width / pic, (float)height / pic);
+	gera.setScale(0.4f, 0.4f);
+	guy.setScale(0.3f, 0.3f);
+	gera.setPosition(geraX, 100.f);
+	guy.setPosition(guyX, 100.f);
 
 	menu[PLAY_PLACE].setFont(font);
 	menu[PLAY_PLACE].setFillColor(sf::Color::Green);
@@ -96,6 +104,38 @@ void MenuState::run(PointerPack& pack)
 		}
 		pack.Window->clear();
 		pack.Window->draw(background);
+		if (geraInPlace != true)
+		{
+			gera.setPosition(geraX, 100.f);
+			geraX++;
+			if (geraX == 0)
+				geraInPlace = true;
+		}
+		if(geraInPlace == true)
+		{
+			gera.setPosition(geraX, 100.f);
+			geraX--;
+			if (geraX == -200)
+				geraInPlace = false;
+		}
+
+		if (guyInPlace != true)
+		{
+			guy.setPosition(guyX, 100.f);
+			guyX++;
+			if (guyX == 720)
+				guyInPlace = true;
+		}
+		if (guyInPlace == true)
+		{
+			guy.setPosition(guyX, 100.f);
+			guyX--;
+			if (guyX == 520)
+				guyInPlace = false;
+		}
+
+		pack.Window->draw(gera);
+		pack.Window->draw(guy);
 		for (int i = 0; i <MAX_NUMBER_OF_ITEMS; i++)
 			pack.Window->draw(Menu->menu[i]);
 		pack.Window->display();
