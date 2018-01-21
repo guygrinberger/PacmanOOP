@@ -190,6 +190,7 @@
     <None Include="Background_sound.ogg" />
     <None Include="bad.ogg" />
     <None Include="buttom.ogg" />
+    <None Include="ClassDiagram.cd" />
     <None Include="eat.ogg" />
     <None Include="shalom.ogg" />
     <None Include="welcome.ogg" />

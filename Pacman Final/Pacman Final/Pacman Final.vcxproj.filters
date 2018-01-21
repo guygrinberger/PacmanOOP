@@ -149,6 +149,7 @@
     <None Include="eat.ogg" />
     <None Include="shalom.ogg" />
     <None Include="welcome.ogg" />
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="bye.wav">
