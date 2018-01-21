@@ -16,7 +16,7 @@ public:
 
 	float getFloatRotation()
 	{
-		switch(direction)
+		switch(direction) // get the direction
 		{
 		default:
 		case Right: return (float)x_positive;
@@ -34,7 +34,7 @@ public:
 
 	sf::Vector2i getVectorFromDirection()
 	{
-		switch(direction)
+		switch(direction) // how to move
 		{
 		case Left:return 
 			sf::Vector2i(MinusOne,0);
@@ -50,7 +50,7 @@ public:
 
 	sf::Vector2i getVectorFromNext()
 	{
-		switch(nextMove)
+		switch(nextMove) // get the next move
 		{
 		case Left:return 
 			sf::Vector2i(MinusOne,0);
@@ -64,5 +64,5 @@ public:
 		return sf::Vector2i(0,0);
 	}
 
-	sf::Vector2i getNode(){ return position / size;}
+	sf::Vector2i getNode(){ return position / size;} // knows the right cell
 };

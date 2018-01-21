@@ -1,5 +1,5 @@
 #pragma once
-
+// consts fir the pac
 enum eType
 {
 	PacDied, 

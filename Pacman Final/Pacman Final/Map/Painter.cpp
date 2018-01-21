@@ -313,18 +313,17 @@ void Painter::getText()
 
 void Painter::save()
 {
-	int index = 0;
+	int index = 1;
 	std::ifstream file;
 	do 
-
 	{
 		index++;
-		std::string  level = "level" + std::to_string(index) + ".txt";
+		std::string  level = "Level" + std::to_string(index) + ".txt";
 		file.open(level);
 	} while (file.good());
 
 
-	std::ofstream output_file("./level" + std::to_string(index) + ".txt");
+	std::ofstream output_file("./Level" + std::to_string(index) + ".txt");
 	for (unsigned int i = 0; i < _mapSizeRow; i++) {
 		if (i == 0)
 		{

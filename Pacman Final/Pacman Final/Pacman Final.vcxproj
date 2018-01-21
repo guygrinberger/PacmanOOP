@@ -206,7 +206,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="pacmoon.jpg" />
-    <Image Include="testpacWhite.tga" />
+    <Image Include="testpacWhite.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

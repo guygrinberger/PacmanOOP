@@ -4,7 +4,7 @@
 StateManager::StateManager() : mWindow(sf::VideoMode(800,800),"Pacman By Guy Grinberger & Gerard Verbun", sf::Style::Close | sf::Style::Titlebar)
 {
 	mWindow.setFramerateLimit(60);//60 fps max
-	mFont.loadFromFile("Endless Wall.ttf");
+	mFont.loadFromFile("diablo_h.ttf");
 	mPack.Font = &mFont;
 	mPack.Manager = this;
 	mPack.Window = &mWindow;
@@ -13,7 +13,7 @@ StateManager::StateManager() : mWindow(sf::VideoMode(800,800),"Pacman By Guy Gri
 
 StateManager::~StateManager()
 {
-	popTop(mStates.size());
+	popTop(int(mStates.size()));
 	clearStacks();
 }
 
@@ -29,7 +29,7 @@ void StateManager::popTop(int amount)
 
 void StateManager::leaveBottom(int amount)
 {
-	popTop(mStates.size() - amount);
+	popTop(int(mStates.size() - amount));
 }
 
 void StateManager::pushTop(State * state)

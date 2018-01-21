@@ -2,6 +2,7 @@
 
 Sounds::Sounds()
 {
+	// create all sounds
 	buffer.loadFromFile("buttom.ogg");
 	buttom.setBuffer(buffer);
 	buffer1.loadFromFile("welcome.ogg");

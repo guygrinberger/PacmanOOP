@@ -4,7 +4,7 @@
 #include <string>
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Window/Event.hpp>
-
+// class for error event
 class ErrState : public State
 {
 public:
@@ -21,12 +21,12 @@ public:
 			{
 				if(eve.type == sf::Event::KeyPressed)
 				{
-					pack.Manager->leaveBottom(1);
+					pack.Manager->leaveBottom(one);
 					return;
 				}
 				if(eve.type == sf::Event::Closed)
 				{
-					pack.Manager->popTop(100);
+					pack.Manager->popTop(clean);
 					return;
 				}
 			}
@@ -39,7 +39,7 @@ public:
 private:
 	std::string mTex;
 };
-
+// class for pause event
 class PauseState : public State
 {
 public:
@@ -54,7 +54,7 @@ public:
 			{
 				if(eve.type == sf::Event::KeyPressed && eve.key.code == sf::Keyboard::P)
 				{
-					pack.Manager->popTop(1);
+					pack.Manager->popTop(one);
 					return;
 				}
 			}
@@ -64,7 +64,7 @@ public:
 		}
 	}
 };
-
+// class for quit event
 class QuitState : public State
 {
 public:
@@ -79,12 +79,12 @@ public:
 			{
 				if(eve.type == sf::Event::KeyPressed && eve.key.code == sf::Keyboard::Y)
 				{
-					pack.Manager->leaveBottom(1);
+					pack.Manager->leaveBottom(one);
 					return;
 				}
 				if(eve.type == sf::Event::KeyPressed && eve.key.code == sf::Keyboard::N)
 				{
-					pack.Manager->popTop(1);
+					pack.Manager->popTop(one);
 					return;
 				}
 			}

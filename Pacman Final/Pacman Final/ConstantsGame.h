@@ -6,19 +6,28 @@
 #include <fstream>
 #include <SFML/Audio.hpp>
 #include "SFML\Graphics.hpp"
+// size for the text of the main
+#define MAX_NUMBER_OF_ITEMS 5 
 
-#define MAX_NUMBER_OF_ITEMS 5
 using std::cin;
 using std::cout;
 using std::endl;
 using std::vector;
-
+// sizes of the windows & backgound pic
 enum board {
 	board = 800,
 	pic = 650
 };
+// to know alawys where is the pacman in the different vectors
 enum eEntsID { Pac = 0 };
-
+// parameters for stack
+enum stack
+{
+	nothing = -1,
+	clean = 100,
+	one = 1
+};
+// the variables of the chooses
 enum places
 {
 	PLAY_PLACE,
@@ -27,9 +36,10 @@ enum places
 	EXIT,
 	MUTE,
 	FAIL = -1,
-	ADDHIGH = 60,
+	ADDHIGH = 55,
 	ADDLOW = 35
 };
+// recognize the signs to the characters
 enum TileType
 {
 	Empty = '1',
@@ -46,6 +56,7 @@ enum TileType
 	BlueCookie = 'K',
 	BlueWall = 'D'
 };
+// directions
 enum eDirection
 {
 	Up,
@@ -58,18 +69,23 @@ enum eDirection
 	y_positive = 270,
 	y_negative = 90
 };
+// numbers of pixels to move
 enum Direction
 {
 	PlusOne = 1,
 	MinusOne = -1
 };
+
+// all effects on the pac after eating cookies
 enum cookieffect
 {
-	initialSpeed = 2,
-	lastCookie = 42,
-	timeGreenCookie =14,
-	timeblueCookie = 7,
-	stop = 0
+	initialSpeed = 2, // stating speed of enemies & pac
+	lastCookie = 42, // red cookie 
+	timeGreenCookie = 14, // time for eaten green cookie
+	timeBlueCookie = 7, //  time for eaten blue cookie
+	stop = 0, // speed of the pac when he stops
+	speedGreen = 5, 
+	speedBlue = 10
 };
 
 
