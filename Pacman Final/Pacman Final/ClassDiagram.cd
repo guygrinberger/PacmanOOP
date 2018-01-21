@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="gameSettings" Collapsed="true">
-    <Position X="22.5" Y="0.5" Width="1.5" />
+    <Position X="14.5" Y="2.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAQAAAAAAAAAAAAAAAABAAAQAgAAAAAEAAAA=</HashCode>
       <FileName>gameSettings.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameState" Collapsed="true">
-    <Position X="6.5" Y="1.75" Width="1.5" />
+    <Position X="5.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIBIgCAABAIBACACAAIgAACAAMFAQABAAIAAgJBIBg=</HashCode>
       <FileName>GameState.h</FileName>
@@ -22,42 +22,42 @@
     </TypeIdentifier>
   </Class>
   <Class Name="ConstantsMap" Collapsed="true">
-    <Position X="6.5" Y="3.5" Width="1.5" />
+    <Position X="10" Y="2.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAQAAAAAAAAAEAgAAAAAAAAAAAAAA=</HashCode>
       <FileName>Map\ConstantsMap.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Cookie" Collapsed="true">
-    <Position X="6.5" Y="6.75" Width="1.5" />
+    <Position X="8.5" Y="6.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAABAAAAAAAAAAAEIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Map\Cookie.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CreateMenu" Collapsed="true">
-    <Position X="11" Y="4.75" Width="1.5" />
+    <Position X="12.25" Y="2.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAABAAAEAAgAAAAAAAAAAAAAACAAAAAABABJAgAQMCA=</HashCode>
       <FileName>Map\CreateMenu.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Enemy" Collapsed="true">
-    <Position X="3.5" Y="6.75" Width="1.5" />
+    <Position X="1.5" Y="2.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AgAAAgAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Map\Enemy.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Object" Collapsed="true">
-    <Position X="0.5" Y="5.5" Width="1.5" />
+    <Position X="1.5" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAgAAIAQAIAAAgAAIAAAAAAIAAAAAAAAAAgAAJAAA=</HashCode>
       <FileName>Map\Object.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Pacman" Collapsed="true">
-    <Position X="6.5" Y="4.75" Width="1.5" />
+    <Position X="1.5" Y="6" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AEAAAAAAAAAAAAAAAAIAAAAAAgAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Map\Pacman.h</FileName>
@@ -78,49 +78,49 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Wall" Collapsed="true">
-    <Position X="3.5" Y="4.75" Width="1.5" />
+    <Position X="12.25" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAIAAAAACAAAAAQAAAAAAAAAAAA=</HashCode>
       <FileName>Map\Wall.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="MenuState" Collapsed="true">
-    <Position X="11" Y="1.75" Width="1.5" />
+    <Position X="10" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QAMCEgBEAAAEABIIAgIBoAgAQAQpAAIAwAABIAAAYCA=</HashCode>
       <FileName>MenuState.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="PacEngine" Collapsed="true">
-    <Position X="24.25" Y="0.5" Width="1.5" />
+    <Position X="14.5" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>IAUIIOQAB4AABAAAABQAgAAAAIBDEAwAQIkABAAECEI=</HashCode>
       <FileName>PacEngine.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="PacEntity" Collapsed="true">
-    <Position X="26" Y="0.5" Width="1.5" />
+    <Position X="14.5" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>CAAIAAIAAAAAoAAAIIAAIAAAgAAAARAAACAAAAAAAAA=</HashCode>
       <FileName>PacEntity.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="PacEvent" Collapsed="true">
-    <Position X="21" Y="1.25" Width="1.5" />
+    <Position X="14.5" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAEAAAAAAAAAAAAAAAAAAAAAABAAAAAAAQAAAAAAA=</HashCode>
       <FileName>PacEvent.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="PointerPack" Collapsed="true">
-    <Position X="24" Y="1.75" Width="1.5" />
+    <Position X="14.5" Y="2" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAABAAABAAACAACAAA=</HashCode>
       <FileName>PointerPack.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ScoreState" Collapsed="true">
-    <Position X="13.25" Y="1.75" Width="1.5" />
+    <Position X="12.25" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAiAAAAACAAAAEAAAAAAAAAAAAABAAIAAAAAAIAg=</HashCode>
       <FileName>ScoreState.h</FileName>
@@ -134,42 +134,42 @@
     </TypeIdentifier>
   </Class>
   <Class Name="ErrState" Collapsed="true">
-    <Position X="2" Y="1.75" Width="1.5" />
+    <Position X="1" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAgAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
       <FileName>SpecialState.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="PauseState" Collapsed="true">
-    <Position X="4.25" Y="1.75" Width="1.5" />
+    <Position X="3.25" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>SpecialState.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="QuitState" Collapsed="true">
-    <Position X="8.75" Y="1.75" Width="1.5" />
+    <Position X="7.75" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>SpecialState.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="State" Collapsed="true">
-    <Position X="7.75" Y="0.5" Width="1.5" />
+    <Position X="6.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAA=</HashCode>
       <FileName>State.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="StateManager" Collapsed="true">
-    <Position X="22.25" Y="2.75" Width="1.5" />
+    <Position X="14.5" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QgAAAAACAQAQAAAAAgAAAAAAAAGAAAAAAAAgCAIAIAA=</HashCode>
       <FileName>StateManager.h</FileName>
     </TypeIdentifier>
   </Class>
   <Struct Name="object" Collapsed="true">
-    <Position X="21" Y="3.5" Width="1.5" />
+    <Position X="25.75" Y="3" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAIABAAAAAAAAAAAAAAAAAAAAAAAQCAAAAAAAAAAAA=</HashCode>
       <FileName>PacEngine.h</FileName>

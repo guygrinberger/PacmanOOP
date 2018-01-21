@@ -2,6 +2,7 @@
 #include <SFML\Graphics.hpp>
 #include "CreateMenu.h"
 #include "ConstantsMap.h"
+
 class Object
 {
 public:

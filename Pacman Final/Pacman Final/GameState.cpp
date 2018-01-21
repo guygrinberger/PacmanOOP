@@ -254,31 +254,10 @@ void GameState::drawAll()
 	for(int x = 0; x < mEngine.vertical; ++x)
 		for(int y = 0; y < mEngine.horizontal; ++y)
 		{
-			whatDraw = true; // helps to decide what to draw - wall or cookie
-			switch(mEngine.gameObjects[x][y]->symbol) // check the symbol
-			{
-			case RedCookie:
-				drawUnmoving(x, y, whatDraw);
-				break;
-			case BlueCookie:
-				drawUnmoving(x, y, whatDraw);
-				break;
-			case GreenCookie:
-				drawUnmoving(x, y, whatDraw);
-				break;
-			case RedWall:
-				whatDraw = false;
-				drawUnmoving(x, y, whatDraw);
-				break;
-			case BlueWall:
-				whatDraw = false;
-				drawUnmoving(x, y, whatDraw);
-				break;
-			case GreenWall:
-				whatDraw = false;
-				drawUnmoving(x, y, whatDraw);
-				break;
-			}
+			if(mEngine.gameObjects[x][y]->symbol == RedWall || mEngine.gameObjects[x][y]->symbol == BlueWall || mEngine.gameObjects[x][y]->symbol == GreenWall) //draw wall
+				drawUnmoving(x, y, false);
+			else if(mEngine.gameObjects[x][y]->symbol == RedCookie || mEngine.gameObjects[x][y]->symbol == BlueCookie || mEngine.gameObjects[x][y]->symbol == GreenCookie) //draw cookie
+				drawUnmoving(x, y, true);
 		}
 
 	mPack->Window->draw(guys[Pac]); // draw the pac

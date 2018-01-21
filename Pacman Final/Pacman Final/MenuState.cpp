@@ -15,31 +15,43 @@ MenuState::MenuState(float width, float height) {
 	gera.setTexture(geraT);
 	guy.setTexture(guyT);
 	background.setScale((float)width / pic, (float)height / pic);// set the pic by the windows' size
-	gera.setScale(width / 2000.f, height / 2000.f);
-	guy.setScale(width / 2666.6666f, height / 2666.6666f);
+	gera.setScale(0.4f, 0.4f);
+	guy.setScale(0.3f, 0.3f);
 	gera.setPosition(geraX, 100.f);
 	guy.setPosition(guyX, 100.f);
 
-	setMenuItems(PLAY_PLACE, sf::Color::Green, "Play", 1, width, height);
-	setMenuItems(MAP_MAKER, sf::Color::White, "MapMaker", 2, width, height);
-	setMenuItems(SCORE_BOARD, sf::Color::White, "ScoreBoard", 3, width, height);
-	setMenuItems(EXIT, sf::Color::White, "Exit", 4, width, height);
-	setMenuItems(MUTE, sf::Color::White, "Mute", 0, 0, 0);
-	selectedItemIndex = PLAY_PLACE;
-}
+	menu[PLAY_PLACE].setFont(font); // font
+	menu[PLAY_PLACE].setFillColor(sf::Color::Green); // default color
+	menu[PLAY_PLACE].setString("Play"); // the string 
+	menu[PLAY_PLACE].setPosition(sf::Vector2f(width / 2, height / (MAX_NUMBER_OF_ITEMS + 1) * 1)); // position
 
-void MenuState::setMenuItems(int index, sf::Color color, string text, int position, float width, float height) {
-	menu[index].setFont(font);
-	menu[index].setFillColor(color);
-	menu[index].setString(text);
-	menu[index].setPosition(sf::Vector2f(width / 2, height / (MAX_NUMBER_OF_ITEMS + 1) * position));
+	menu[MAP_MAKER].setFont(font);
+	menu[MAP_MAKER].setFillColor(sf::Color::White);
+	menu[MAP_MAKER].setString("MapMaker");
+	menu[MAP_MAKER].setPosition(sf::Vector2f(width / 2, height / (MAX_NUMBER_OF_ITEMS + 1) * 2));
+
+	menu[SCORE_BOARD].setFont(font);
+	menu[SCORE_BOARD].setFillColor(sf::Color::White);
+	menu[SCORE_BOARD].setString("ScoreBoard");
+	menu[SCORE_BOARD].setPosition(sf::Vector2f(width / 2, height / (MAX_NUMBER_OF_ITEMS + 1) * 3));
+
+	menu[EXIT].setFont(font);
+	menu[EXIT].setFillColor(sf::Color::White);
+	menu[EXIT].setString("Exit");
+	menu[EXIT].setPosition(sf::Vector2f(width / 2, height / (MAX_NUMBER_OF_ITEMS + 1) * 4));
+	selectedItemIndex = PLAY_PLACE;
+
+	menu[MUTE].setFont(font);
+	menu[MUTE].setFillColor(sf::Color::White);
+	menu[MUTE].setString("Mute");
+	menu[MUTE].setPosition(sf::Vector2f(0, 0));
 }
 
 void MenuState::run(PointerPack& pack)
 {
-	for(int i =0 ; i <MAX_NUMBER_OF_ITEMS; i++)
+	for (int i = 0; i <MAX_NUMBER_OF_ITEMS; i++)
 		menu[i].setFont(*pack.Font); // input for all options the font
-	Menu = std::make_unique<MenuState>((float)pic, (float)pic); // Initializing the menu unique pointer
+	Menu = std::make_unique<MenuState>((float)board, (float)board); // Initializing the menu unique pointer
 	while (pack.Window->isOpen())
 	{
 		sf::Event event;
@@ -65,8 +77,8 @@ void MenuState::run(PointerPack& pack)
 				case sf::Keyboard::Return: // enter key
 					pack.Sound->welcome.play();
 					makeChoose(pack);  // checks which button has been clicked
-					// if the last choice was between right values - return to make the next action in the stack
-					if (Menu->saveChoose >= PLAY_PLACE && Menu->saveChoose <= EXIT) 
+									   // if the last choice was between right values - return to make the next action in the stack
+					if (Menu->saveChoose >= PLAY_PLACE && Menu->saveChoose <= EXIT)
 						return;
 					break; // helps to keep the menu on the screen
 				}
@@ -74,10 +86,10 @@ void MenuState::run(PointerPack& pack)
 				switch (event.mouseButton.button)
 				{
 				case sf::Mouse::Left:
+					isClicked = true;
 					// checks the click
-					Menu->getSelection(pack.Window->getPosition().x, pack.Window->getPosition().y, sf::Mouse::getPosition().x, sf::Mouse::getPosition().y);
 					// if the press was on some button
-					if (Menu->saveChoose >= PLAY_PLACE && Menu->saveChoose <= MUTE)
+					if (!(Menu->getSelection(float(event.mouseButton.x), float(event.mouseButton.y), isClicked)))
 					{
 						pack.Sound->welcome.play();
 						makeChoose(pack);
@@ -88,8 +100,9 @@ void MenuState::run(PointerPack& pack)
 					break;
 				}
 			case sf::Event::MouseMoved:
+				isClicked = false;
 				// avoid the click's sound every mouse's move
-				if (!(Menu->getSelection(pack.Window->getPosition().x, pack.Window->getPosition().y, sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
+				if (!(Menu->getSelection(float(event.mouseMove.x), float(event.mouseMove.y), isClicked)))
 					pack.Sound->buttom.play();
 				break;
 			}
@@ -97,7 +110,7 @@ void MenuState::run(PointerPack& pack)
 		}
 		pack.Window->clear();
 		pack.Window->draw(background); // draws the background
-		
+
 		justFun(); // for animation of us
 		pack.Window->draw(gera); // draw us
 		pack.Window->draw(guy);
@@ -134,7 +147,7 @@ void MenuState::makeChoose(PointerPack & pack)
 		Painter{ "Map/icons.jpg", "Level" + std::to_string(numOfFiles) + ".txt" , sizeRow, sizeCol }.run();// Start running the painter
 		break;
 	}
-	
+
 	case SCORE_BOARD:
 	{
 		pack.Manager->pushTop(new ScoreState(nothing)); // open the scoreboard
@@ -188,10 +201,10 @@ void MenuState::MoveDown()
 	saveChoose = selectedItemIndex;// helps to know which option has been chosen
 }
 
-bool MenuState::getSelection(int indexXwindow, int indexYwindow, int indexXmouse, int indexYmouse)
+bool MenuState::getSelection(float indexXmouse, float indexYmouse, bool isClicked)
 {
-	whatSelected = checkPlace(indexXwindow, indexYwindow, indexXmouse, indexYmouse); // gets the right button 
-	if (whatSelected == saveChoose || whatSelected == FAIL) // if the click wasn't on button or on the same button twist return true
+	whatSelected = checkPlace(indexXmouse, indexYmouse); // gets the right button 
+	if (whatSelected == saveChoose && !isClicked || whatSelected == FAIL && isClicked) // if the click wasn't on button or on the same button twist return true
 	{
 		samePlace = true;
 		return samePlace;
@@ -268,22 +281,19 @@ void MenuState::justFun()
 	}
 }
 
-places MenuState::checkPlace(int indexXwindow, int indexYwindow, int indexXmouse, int indexYmouse)
+places MenuState::checkPlace(float indexXmouse, float indexYmouse)
 {
-	if (indexXmouse - indexXwindow > menu[PLAY_PLACE].getPosition().x) // checks if the index x starts from some const index
-	{
-		// checks the index to know if the click has been on some of the buttons
-		if (indexXmouse - indexXwindow < 410 && indexYmouse - indexYwindow >(menu[PLAY_PLACE].getPosition().y + ADDLOW) && indexYmouse - indexYwindow < (menu[PLAY_PLACE].getPosition().y + ADDHIGH))
-			return PLAY_PLACE;
-		if (indexXmouse - indexXwindow < 520 && indexYmouse - indexYwindow >(menu[MAP_MAKER].getPosition().y + ADDLOW) && indexYmouse - indexYwindow < (menu[MAP_MAKER].getPosition().y + ADDHIGH))
-			return MAP_MAKER;
-		if (indexXmouse - indexXwindow < 535 && indexYmouse - indexYwindow >(menu[SCORE_BOARD].getPosition().y + ADDLOW) && indexYmouse - indexYwindow < (menu[SCORE_BOARD].getPosition().y + ADDHIGH))
-			return SCORE_BOARD;
-		if (indexXmouse - indexXwindow < 410 && indexYmouse - indexYwindow >(menu[EXIT].getPosition().y + ADDLOW) && indexYmouse - indexYwindow < (menu[EXIT].getPosition().y + ADDHIGH))
-			return EXIT;
-	}
+	// checks the index to know if the click has been on some of the buttons
+	if (menu[PLAY_PLACE].getGlobalBounds().contains({ indexXmouse,indexYmouse }))
+		return PLAY_PLACE;
+	if (menu[MAP_MAKER].getGlobalBounds().contains({ indexXmouse,indexYmouse }))
+		return MAP_MAKER;
+	if (menu[SCORE_BOARD].getGlobalBounds().contains({ indexXmouse,indexYmouse }))
+		return SCORE_BOARD;
+	if (menu[EXIT].getGlobalBounds().contains({ indexXmouse,indexYmouse }))
+		return EXIT;
 	// checks if the click has been mute option
-	if (indexXmouse - indexXwindow >= 0 && indexXmouse - indexXwindow < 100 && indexYmouse - indexYwindow >= 0 && indexYmouse - indexYwindow < 70) 
+	if (menu[MUTE].getGlobalBounds().contains({ indexXmouse,indexYmouse }))
 		return MUTE;
 	return FAIL; // if the click was on the wrong place
 }
