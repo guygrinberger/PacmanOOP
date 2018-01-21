@@ -20,31 +20,21 @@ MenuState::MenuState(float width, float height) {
 	gera.setPosition(geraX, 100.f);
 	guy.setPosition(guyX, 100.f);
 
-	menu[PLAY_PLACE].setFont(font); // font
-	menu[PLAY_PLACE].setFillColor(sf::Color::Green); // default color
-	menu[PLAY_PLACE].setString("Play"); // the string 
-	menu[PLAY_PLACE].setPosition(sf::Vector2f(width / 2, height / (MAX_NUMBER_OF_ITEMS + 1) * 1)); // position
-
-	menu[MAP_MAKER].setFont(font);
-	menu[MAP_MAKER].setFillColor(sf::Color::White);
-	menu[MAP_MAKER].setString("MapMaker");
-	menu[MAP_MAKER].setPosition(sf::Vector2f(width / 2, height / (MAX_NUMBER_OF_ITEMS + 1) * 2));
-
-	menu[SCORE_BOARD].setFont(font);
-	menu[SCORE_BOARD].setFillColor(sf::Color::White);
-	menu[SCORE_BOARD].setString("ScoreBoard");
-	menu[SCORE_BOARD].setPosition(sf::Vector2f(width / 2, height / (MAX_NUMBER_OF_ITEMS + 1) * 3));
-
-	menu[EXIT].setFont(font);
-	menu[EXIT].setFillColor(sf::Color::White);
-	menu[EXIT].setString("Exit");
-	menu[EXIT].setPosition(sf::Vector2f(width / 2, height / (MAX_NUMBER_OF_ITEMS + 1) * 4));
+	setMenuItems(PLAY_PLACE, sf::Color::Green, "Play", width, height);
+	setMenuItems(MAP_MAKER, sf::Color::White, "MapMaker", width, height);
+	setMenuItems(SCORE_BOARD, sf::Color::White, "ScoreBoard", width, height);
+	setMenuItems(EXIT, sf::Color::White, "Exit", width, height);
+	setMenuItems(MUTE, sf::Color::White, "Mute", 0, 0);
 	selectedItemIndex = PLAY_PLACE;
+}
 
-	menu[MUTE].setFont(font);
-	menu[MUTE].setFillColor(sf::Color::White);
-	menu[MUTE].setString("Mute");
-	menu[MUTE].setPosition(sf::Vector2f(0, 0));
+void MenuState::setMenuItems(int index, sf::Color color, string text, float width, float height)
+{
+	menu[index].setFont(font);
+	menu[index].setFillColor(color);
+	menu[index].setString(text);
+	menu[index].setPosition(sf::Vector2f(width / 2, height / (MAX_NUMBER_OF_ITEMS + 1) * (index + 1)));
+
 }
 
 void MenuState::run(PointerPack& pack)

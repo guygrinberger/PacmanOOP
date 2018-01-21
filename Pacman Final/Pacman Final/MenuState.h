@@ -13,6 +13,7 @@ class MenuState : public State
 public:
 	int getPlace(); // return the current choice
 	MenuState(float width, float height); // constractor for the menu
+	void setMenuItems(int index, sf::Color color, string text, float width, float height);
 	virtual void run(PointerPack& pack); // run all the process
 	bool getSelection(float indexXmouse, float indexYmouse, bool isClicked); // gets the selected button, when the player click
 	places checkPlace(float indexXmouse, float indexYmouse); // returns the right button
