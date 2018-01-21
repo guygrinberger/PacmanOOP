@@ -9,13 +9,23 @@
 #include "ConstantsGame.h"
 #include "Sounds.h"
 #include "gameSettings.h"
+#include <limits.h>
+
 class ConstantsGame;
+
 struct object // struct for each object which moves
 {
 	unsigned char symbol;
 	sf::Color color; 
 	PacEntity entity; // direction
 	bool isSmart = true; // helps to decide who is smart ghost who not
+};
+
+struct bfsNode
+{
+	int distance = INT_MAX; //distance from source
+	bool isUsed = false; //for knowing which nodes have already been checked
+	sf::Vector2i pi = { -1, -1 };
 };
 
 class PacEngine
@@ -27,12 +37,13 @@ public:
 	float getRotation(int who);	// rotation the pic
 	void update(); // calls to update pac & enemies
 	void setPacDirection(eDirection direction); // sets direction of the pac
-	vector<object*> guys; // vector of the pac & enemies
+	vector<object*> moveables; // vector of the pac & enemies
 	sf::Clock cookieTimer,globalClock; // clocks for each cookie & global clock
 	std::deque<PacEvent> mEventsList; // queue of events
 	std::unique_ptr<Sounds> soundGame; // unique ptr for all sounds
 	vector<std::vector<object*>> gameObjects;// Pacman game objects
-
+	std::vector<sf::Vector2i> neigbors(sf::Vector2i current);
+	void updateBFS(sf::Vector2i source);
 	bool loadMap(const std::string& path); // laod map
 	bool getEvent(PacEvent& event), // gets the event
 		 spaceClicked = false; // parameter save if the spcae key has been clicked
@@ -41,7 +52,8 @@ public:
 		ghostpos = 0; // if the map contain 0 enemies
 
 private:
-
+	float lastBFSupdate = 0;
+	std::vector<std::vector<bfsNode>> bfsMap;
 	eDirection getNextMove(PacEntity& ent); // calculate the next move & checks if it's can
 	sf::Vector2i getTarg(int who); // helps to the enemies the pac's vector (position)
 	sf::Vector2i startPacPos; // knows twhere to position the pac

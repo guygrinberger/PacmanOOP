@@ -4,6 +4,7 @@
 #include "ScoreState.h"
 #include "SpecialState.h"
 #include "ConstantsGame.h"
+
 GameState::GameState(): currentMap(0), mScore(0), mPack(0x0) // Initializing the gamestate
 {
 	pacframe = 0; // Initializing to 0 the moves of pac
@@ -48,20 +49,20 @@ bool GameState::loadMap()
 	}
 
 	mEngine.loadMap(mMapNames[currentMap - 1]); // loads the map
-	guys.resize(mEngine.ghostpos + 1); // makes the vector of characters by the number of enemies + pac
+	moveables.resize(mEngine.ghostpos + 1); // makes the vector of characters by the number of enemies + pac
 	mEngine.lastCookieEaten = 42;  // default cookie
 	for (int i = 0; i < mEngine.ghostpos + 1; ++i){ // prints all the characters
-		guys[i].setTexture(mAtlas);
-		guys[i].setOrigin(12.5f, 12.5f);
-		guys[i].setTextureRect(sf::IntRect(25, 26, 25, 25));
+		moveables[i].setTexture(mAtlas);
+		moveables[i].setOrigin(12.5f, 12.5f);
+		moveables[i].setTextureRect(sf::IntRect(25, 26, 25, 25));
 	}
 
-	guys[Pac].setTextureRect(sf::IntRect(0, 0, 25, 25)); // prints the pac
+	moveables[Pac].setTextureRect(sf::IntRect(0, 0, 25, 25)); // prints the pac
 
 	for (int i = 1; i <= mEngine.ghostpos; i++) // set color for the enemies
-		guys[i].setColor(mEngine.guys[i]->color);
+		moveables[i].setColor(mEngine.moveables[i]->color);
 
-	guys[Pac].setColor(mEngine.gameObjects[mEngine.publicPacPos.x][mEngine.publicPacPos.y]->color); // set the pac's color
+	moveables[Pac].setColor(mEngine.gameObjects[mEngine.publicPacPos.x][mEngine.publicPacPos.y]->color); // set the pac's color
 	return true; // the map has been loaded 
 }
 
@@ -136,7 +137,7 @@ void GameState::run(PointerPack& pack)
 				lives.setString("Lives:" + std::to_string(peve.data)); // update the lives points
 				break;
 			case PillsExhausted:
-				mEngine.mEventsList.push_back(PacEvent(ScoreChange, (int(guys.size() * 50)))); // calculate the score
+				mEngine.mEventsList.push_back(PacEvent(ScoreChange, (int(moveables.size() * 50)))); // calculate the score
 				mEngine.gameObjects.clear(); // clean the map from the eaten cookies
 				mapOk=loadMap();  // check if the map still ok
 				break;
@@ -159,14 +160,14 @@ void GameState::run(PointerPack& pack)
 		pack.Window->draw(lives);
 		pack.Window->draw(level);
 		// checks the pac's speed to know how to fill the font of the speed
-		if (mEngine.guys[Pac]->entity.speed > initialSpeed)
+		if (mEngine.moveables[Pac]->entity.speed > initialSpeed)
 			speed.setFillColor(sf::Color::Green);
-		else if (mEngine.guys[Pac]->entity.speed < initialSpeed)
+		else if (mEngine.moveables[Pac]->entity.speed < initialSpeed)
 			speed.setFillColor(sf::Color::Red);
 		else
 			speed.setFillColor(sf::Color::White);
 
-		speed.setString("Speed:" + std::to_string(mEngine.guys[Pac]->entity.speed)); // set the current speed of the pac
+		speed.setString("Speed:" + std::to_string(mEngine.moveables[Pac]->entity.speed)); // set the current speed of the pac
 		pack.Window->draw(speed); // draw the current speed
 		// checks the last eaten cookie
 		if (mEngine.lastCookieEaten == GreenCookie)
@@ -232,12 +233,12 @@ void GameState::drawGhosts()
 		++pacframe;
 		pacframe %= 4; // the moving of the enemies & pac
 		// make the right size of the pac
-		guys[Pac].setTextureRect(sf::IntRect(25*(3-pacframe),0,25,25));
-		guys[Pac].setScale(gameSettings::getInstance().getScaleSize() / 25.f, gameSettings::getInstance().getScaleSize() / 25.f);
+		moveables[Pac].setTextureRect(sf::IntRect(25*(3-pacframe),0,25,25));
+		moveables[Pac].setScale(gameSettings::getInstance().getScaleSize() / 25.f, gameSettings::getInstance().getScaleSize() / 25.f);
 		for (int i = 1; i <= mEngine.ghostpos; i++)// make the right size of the enemies
 		{
-			guys[i].setTextureRect(sf::IntRect(25+(pacframe%2)*25,26,25,25));
-			guys[i].setScale(gameSettings::getInstance().getScaleSize() / 25.f, gameSettings::getInstance().getScaleSize() / 25.f);
+			moveables[i].setTextureRect(sf::IntRect(25+(pacframe%2)*25,26,25,25));
+			moveables[i].setScale(gameSettings::getInstance().getScaleSize() / 25.f, gameSettings::getInstance().getScaleSize() / 25.f);
 		}
 	}
 }
@@ -247,9 +248,9 @@ void GameState::drawAll()
 	drawGhosts(); 
 
 	for (int i = 0; i < mEngine.ghostpos + 1; i++)
-		guys[i].setPosition(mEngine.getPosition(i)); // set the positions of the enemies
+		moveables[i].setPosition(mEngine.getPosition(i)); // set the positions of the enemies
 
-	guys[Pac].setRotation(mEngine.getRotation(x_positive)); // position of the pac at the beginning
+	moveables[Pac].setRotation(mEngine.getRotation(x_positive)); // position of the pac at the beginning
 
 	for(int x = 0; x < mEngine.vertical; ++x)
 		for(int y = 0; y < mEngine.horizontal; ++y)
@@ -260,13 +261,13 @@ void GameState::drawAll()
 				drawUnmoving(x, y, true);
 		}
 
-	mPack->Window->draw(guys[Pac]); // draw the pac
+	mPack->Window->draw(moveables[Pac]); // draw the pac
 	for (int i = 1; i <= mEngine.ghostpos; i++) // draw the enemies - vector of the enemies starts from cell 1
 	{
-		mPack->Window->draw(guys[i]); // draw them
+		mPack->Window->draw(moveables[i]); // draw them
 		// set the enemies' eyes
-		leftEye.setPosition(guys[i].getPosition());
-		rightEye.setPosition(guys[i].getPosition());
+		leftEye.setPosition(moveables[i].getPosition());
+		rightEye.setPosition(moveables[i].getPosition());
 		// set them by the right size
 		leftEye.setScale(gameSettings::getInstance().getScaleSize() / 15.f, gameSettings::getInstance().getScaleSize() / 15.f);
 		rightEye.setScale(gameSettings::getInstance().getScaleSize() / 15.f, gameSettings::getInstance().getScaleSize() / 15.f);

@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <queue>
 
 bool enterable(unsigned char number) // checks if the cell contain wall
 {
@@ -26,18 +27,18 @@ int fitBetween(int a,int b,int c) // if the pac & enemies can advance
 
 int get2DistanceFromNodes(sf::Vector2i first,sf::Vector2i second) // return the distance from 2 points
 {
-	return (first.x-second.x)*(first.x-second.x)+(first.y-second.y)*(first.y-second.y);
+	return (first.x - second.x) * (first.x - second.x) + (first.y  -second.y) * (first.y-second.y);
 }
 
 eDirection getDirFromVec(sf::Vector2i from) // gets the direction from the vector & returns the right direction
 {
-	if(from.x==PlusOne)
+	if(from.x == PlusOne)
 		return Right;
-	if(from.x==MinusOne)
+	if(from.x == MinusOne)
 		return Left;
-	if(from.y== PlusOne)
+	if(from.y == PlusOne)
 		return Down;
-	if(from.y== MinusOne)
+	if(from.y == MinusOne)
 		return Up;
 
 	return Right; 
@@ -49,12 +50,56 @@ PacEngine::PacEngine()  :mLives(3) {
 
 sf::Vector2f PacEngine::getPosition(int who)
 {
-	return guys[who]->entity.getFloatPos();
+	return moveables[who]->entity.getFloatPos();
 }
 
 float PacEngine::getRotation(int who)
 {
-	return guys[who]->entity.getFloatRotation();
+	return moveables[who]->entity.getFloatRotation();
+}
+
+std::vector<sf::Vector2i> PacEngine::neigbors(sf::Vector2i current)
+{
+	std::vector<sf::Vector2i> neighbors;
+	std::vector<sf::Vector2i> offsets;
+	offsets.push_back({ current.x + 1, current.y });
+	offsets.push_back({ current.x - 1, current.y });
+	offsets.push_back({ current.x, current.y + 1});
+	offsets.push_back({ current.x, current.y - 1});
+	for (int i = 0; i < offsets.size(); i++)
+	{
+		if (offsets[i].x >= 0 && offsets[i].x < vertical && offsets[i].y >= 0 && offsets[i].y < horizontal)
+			if (enterable(gameObjects[offsets[i].x][offsets[i].y]->symbol))
+				neighbors.push_back(offsets[i]);
+	}
+	return neighbors;
+}
+
+void PacEngine::updateBFS(sf::Vector2i source)
+{
+	bfsMap.assign(horizontal, std::vector<bfsNode>(vertical));
+	bfsMap[source.y][source.x].isUsed = true;
+	bfsMap[source.y][source.x].distance = 0;
+	std::queue<sf::Vector2i> bfsQueue;
+	bfsQueue.push(source);
+	while (!bfsQueue.empty()) {
+		auto current = bfsQueue.front();
+		bfsQueue.pop();
+		if (current.x == 9 && current.y == 1)
+			auto a = 1;
+
+		auto currentNeighbors = neigbors(current);
+
+		for (int i = 0; i < currentNeighbors.size(); i++)
+		{
+			if (!bfsMap[currentNeighbors[i].y][currentNeighbors[i].x].isUsed) {
+				bfsMap[currentNeighbors[i].y][currentNeighbors[i].x].isUsed = true;
+				bfsMap[currentNeighbors[i].y][currentNeighbors[i].x].pi = current;
+				bfsMap[currentNeighbors[i].y][currentNeighbors[i].x].distance = bfsMap[current.y][current.x].distance + 1;
+				bfsQueue.push(currentNeighbors[i]);
+			}
+		}
+	}
 }
 
 bool PacEngine::loadMap(const std::string& path)
@@ -62,8 +107,8 @@ bool PacEngine::loadMap(const std::string& path)
 	mTotalPills = 0;
 	ghostpos = 0;
 	startPos.resize(0);
-	guys.resize(1);
-	guys[Pac] = new object;
+	moveables.resize(1);
+	moveables[Pac] = new object;
 	std::ifstream file(path.c_str());
 
 	if (!file.is_open())
@@ -110,9 +155,9 @@ bool PacEngine::loadMap(const std::string& path)
 				gameObjects[x][y]->color = sf::Color::Red;
 				++ghostpos; // increase the number of the enemies
 				startPos.resize(ghostpos); // resize the size of the enemies
-				guys.resize(ghostpos + 1);
-				guys[ghostpos] = new object;
-				guys[ghostpos] = gameObjects[x][y];
+				moveables.resize(ghostpos + 1);
+				moveables[ghostpos] = new object;
+				moveables[ghostpos] = gameObjects[x][y];
 				startPos[ghostpos - 1] = getPosFromNode(x, y);
 				break;
 			case RedCookie:
@@ -135,9 +180,9 @@ bool PacEngine::loadMap(const std::string& path)
 				gameObjects[x][y]->color = sf::Color::Green;
 				++ghostpos;
 				startPos.resize(ghostpos);
-				guys.resize(ghostpos + 1);
-				guys[ghostpos] = new object;
-				guys[ghostpos] = gameObjects[x][y];
+				moveables.resize(ghostpos + 1);
+				moveables[ghostpos] = new object;
+				moveables[ghostpos] = gameObjects[x][y];
 				startPos[ghostpos - 1] = getPosFromNode(x, y);
 				break;
 			case GreenCookie:
@@ -160,9 +205,9 @@ bool PacEngine::loadMap(const std::string& path)
 				gameObjects[x][y]->color = sf::Color::Blue;
 				++ghostpos;
 				startPos.resize(ghostpos);
-				guys.resize(ghostpos + 1);
-				guys[ghostpos] = new object;
-				guys[ghostpos] = gameObjects[x][y];
+				moveables.resize(ghostpos + 1);
+				moveables[ghostpos] = new object;
+				moveables[ghostpos] = gameObjects[x][y];
 				startPos[ghostpos - 1] = getPosFromNode(x, y);
 				break;
 			case BlueCookie:
@@ -178,15 +223,15 @@ bool PacEngine::loadMap(const std::string& path)
 		}
 	}
 
-	guys[Pac]->entity.direction = Right; // defualt direction's pac
+	moveables[Pac]->entity.direction = Right; // defualt direction's pac
 	int random;
-	if (guys.size() >= 2) { // 2 - in the 0 cell is the pac & if i have at less one ghost
+	if (moveables.size() >= 2) { // 2 - in the 0 cell is the pac & if i have at less one ghost
 		for (int i = 0; i <= ghostpos; ++i) // choose if the enemy is smart or not
 		{
-			guys[i]->entity.speed = initialSpeed;
+			moveables[i]->entity.speed = initialSpeed;
 			random = rand() % 2;
 			if (random == 0)
-				guys[i]->isSmart = false;
+				moveables[i]->isSmart = false;
 		}
 
 		if (ghostpos != startPos.size()) // if false the map is not ok
@@ -220,25 +265,25 @@ bool PacEngine::getEvent(PacEvent& event)
 
 void PacEngine::setPacDirection(eDirection direction)
 {
-		guys[Pac]->entity.nextMove=direction;
+		moveables[Pac]->entity.nextMove=direction;
 }
 
 void PacEngine::updatePac()
 {
 	sf::Clock globalClock;
-	sf::Vector2i update = guys[Pac]->entity.getVectorFromDirection();
+	sf::Vector2i update = moveables[Pac]->entity.getVectorFromDirection();
 	globalClock.restart();
-	guys[Pac]->entity.speed = initialSpeed;
+	moveables[Pac]->entity.speed = initialSpeed;
 
 	if (spaceClicked) // if the space kep has been pressed
-		guys[Pac]->entity.speed = stop;
+		moveables[Pac]->entity.speed = stop;
 	else if(!spaceClicked && lastCookieEaten != lastCookie) // if it's not the red cookie
-		guys[Pac]->entity.speed = overallSpeed;
+		moveables[Pac]->entity.speed = overallSpeed;
 
-	for(int i = 0; i < guys[Pac]->entity.speed; ++i) // moving the pac by the current speed to make the moving smooth
+	for(int i = 0; i < moveables[Pac]->entity.speed; ++i) // moving the pac by the current speed to make the moving smooth
 	{
-		guys[Pac]->entity.position += update;
-		if(guys[Pac]->entity.isAtNode())
+		moveables[Pac]->entity.position += update;
+		if(moveables[Pac]->entity.isAtNode())
 			break;
 	}
 	// if the cookie is not red and the time of cookies' influence had been finished
@@ -246,9 +291,9 @@ void PacEngine::updatePac()
 		(lastCookieEaten == BlueCookie && cookieTimer.getElapsedTime().asSeconds() >= timeBlueCookie))
 			initSpeed();
 
-	if(guys[Pac]->entity.isAtNode()) // if the pac in the right pixels 
+	if(moveables[Pac]->entity.isAtNode()) // if the pac in the right pixels 
 	{
-		sf::Vector2i t = guys[Pac]->entity.getNode(); // gets the pixels - like a temp
+		sf::Vector2i t = moveables[Pac]->entity.getNode(); // gets the pixels - like a temp
 		unsigned char & tmp = gameObjects[t.x][t.y]->symbol;
 
 		switch(tmp)
@@ -266,16 +311,16 @@ void PacEngine::updatePac()
 			initialByCookie(tmp, speedBlue, BlueCookie, overallSpeed);
 			break;
 		}
-		if(guys[Pac]->entity.nextMove != None &&
-			enterable(fetchTileAt(guys[Pac]->entity.getNode(),guys[Pac]->entity.getVectorFromNext()))) // if the pac can enter in the next cell
+		if(moveables[Pac]->entity.nextMove != None &&
+			enterable(fetchTileAt(moveables[Pac]->entity.getNode(),moveables[Pac]->entity.getVectorFromNext()))) // if the pac can enter in the next cell
 		{
-			guys[Pac]->entity.direction=guys[Pac]->entity.nextMove;
-			guys[Pac]->entity.nextMove=None;
+			moveables[Pac]->entity.direction=moveables[Pac]->entity.nextMove;
+			moveables[Pac]->entity.nextMove=None;
 		}
-		if(!enterable(fetchTileAt(guys[Pac]->entity.getNode(),guys[Pac]->entity.getVectorFromDirection()))) // the next direction is nove to avoid the next move
-			guys[Pac]->entity.direction=None;
+		if(!enterable(fetchTileAt(moveables[Pac]->entity.getNode(),moveables[Pac]->entity.getVectorFromDirection()))) // the next direction is nove to avoid the next move
+			moveables[Pac]->entity.direction=None;
 
-		update=guys[Pac]->entity.getVectorFromDirection(); // get the next pac's move
+		update=moveables[Pac]->entity.getVectorFromDirection(); // get the next pac's move
 	}
 }
 
@@ -283,7 +328,7 @@ void PacEngine::checkCollisions()
 {
 	int doit = false; // avoit if we have a lot of events in the queue
 	for(unsigned int i = 1; i <= startPos.size(); ++i)
-		if(guys[Pac]->entity.getNode() == guys[i]->entity.getNode())
+		if(moveables[Pac]->entity.getNode() == moveables[i]->entity.getNode())
 				doit = true; // had a Collision
 
 	if(!doit) // finish the function
@@ -302,13 +347,13 @@ void PacEngine::checkCollisions()
 void PacEngine::resetPositions()
 {
 	lastCookieEaten = lastCookie; // red cookie
-	if (guys.size() >= 2)
+	if (moveables.size() >= 2)
 		for (unsigned int i = 1; i <= startPos.size(); i++)
-			guys[i]->entity.position = startPos[i - 1];
+			moveables[i]->entity.position = startPos[i - 1];
 
-	guys[Pac]->entity.position = startPacPos;
-	guys[Pac]->entity.direction = None;
-	guys[Pac]->entity.nextMove = None;
+	moveables[Pac]->entity.position = startPacPos;
+	moveables[Pac]->entity.direction = None;
+	moveables[Pac]->entity.nextMove = None;
 }
 
 int PacEngine::fetchTileAt(sf::Vector2i pos,sf::Vector2i off)
@@ -344,40 +389,47 @@ void PacEngine::checkPills()
 
 void PacEngine::updateGhost(int who)
 {
-	sf::Vector2i update = guys[who]->entity.getVectorFromDirection();
-	for(int i = 0; i < guys[who]->entity.speed; ++i){
-		guys[who]->entity.position += update;
-		if(guys[who]->entity.isAtNode())
-			break;
+	float currentTime = globalClock.getElapsedTime().asSeconds();
+	if (currentTime - lastBFSupdate > 0.5f || lastBFSupdate == 0)
+	{
+		updateBFS(moveables[Pac]->entity.getNode());
+		lastBFSupdate = currentTime;
 	}
 
-	if(guys[who]->entity.isAtNode())
+	if(moveables[who]->entity.isAtNode())
 	{
-		if (guys[who]->isSmart == true)
+		if (moveables[who]->isSmart == true)
 		{
 			//chose next move:
-			guys[who]->entity.target = getTarg(who);
-			guys[who]->entity.direction = getNextMove(guys[who]->entity);
+			moveables[who]->entity.target = getTarg(who);
+			moveables[who]->entity.direction = getNextMove(moveables[who]->entity);
 		}
 		else
 		{
 			int random = rand() % 4;
-			guys[who]->entity.direction = eDirection(random);
+			moveables[who]->entity.direction = eDirection(random);
 			// checks if the direction is good
-			if (!enterable(fetchTileAt(guys[who]->entity.getNode(), guys[who]->entity.getVectorFromDirection())))
-				guys[who]->entity.direction = None;
+			if (!enterable(fetchTileAt(moveables[who]->entity.getNode(), moveables[who]->entity.getVectorFromDirection())))
+				moveables[who]->entity.direction = None;
 		}
+	}
+
+	sf::Vector2i update = moveables[who]->entity.getVectorFromDirection();
+	for (int i = 0; i < moveables[who]->entity.speed; ++i) {
+		moveables[who]->entity.position += update;
+		if (moveables[who]->entity.isAtNode())
+			break;
 	}
 }
 
 sf::Vector2i PacEngine::getTarg(int who)
 {
-	return guys[Pac]->entity.getNode();
+	return moveables[Pac]->entity.getNode();
 }
 
 void PacEngine::initSpeed()
 {
-	guys[Pac]->entity.speed = initialSpeed;
+	moveables[Pac]->entity.speed = initialSpeed;
 	overallSpeed = initialSpeed;
 	lastCookieEaten = lastCookie;
 }
@@ -399,9 +451,16 @@ void PacEngine::initialByCookie(unsigned char & tmp, int speed, TileType color, 
 eDirection PacEngine::getNextMove(PacEntity& ent)
 {
 	std::vector<sf::Vector2i> possibleNodes;
-	sf::Vector2i tmp=ent.getVectorFromDirection();
+	sf::Vector2i tmp = ent.getNode();
+	
+	if (bfsMap[tmp.y][tmp.x].pi.x == -1)
+		return None;
+	auto a = bfsMap[tmp.y][tmp.x].pi - tmp;
+	return getDirFromVec(a);
+
+
 	// checks if the move is possible 
-	if(enterable(fetchTileAt(ent.getNode(),sf::Vector2i(PlusOne,0))))
+	/*if(enterable(fetchTileAt(ent.getNode(),sf::Vector2i(PlusOne,0))))
 		possibleNodes.push_back(ent.getNode()+sf::Vector2i(PlusOne,0));
 	if(enterable(fetchTileAt(ent.getNode(),sf::Vector2i(MinusOne,0))))
 		possibleNodes.push_back(ent.getNode()+sf::Vector2i(MinusOne,0));
@@ -410,7 +469,7 @@ eDirection PacEngine::getNextMove(PacEntity& ent)
 	if(enterable(fetchTileAt(ent.getNode(),sf::Vector2i(0, MinusOne))))
 		possibleNodes.push_back(ent.getNode()+sf::Vector2i(0, MinusOne));
 
-	for(std::vector<sf::Vector2i>::iterator it=possibleNodes.begin();it!=possibleNodes.end();++it)
+	for(std::vector<sf::Vector2i>::iterator it = possibleNodes.begin(); it != possibleNodes.end(); ++it)
 	{
 		if(*it==(ent.getNode()-ent.getVectorFromDirection()))
 		{
@@ -423,7 +482,7 @@ eDirection PacEngine::getNextMove(PacEntity& ent)
 
 	for(unsigned int i = 0; i < possibleNodes.size(); ++i)
 	{
-		if(a>get2DistanceFromNodes(ent.target,possibleNodes[i]))
+		if(a > get2DistanceFromNodes(ent.target, possibleNodes[i]))
 		{
 			a = get2DistanceFromNodes(ent.target,possibleNodes[i]);
 			b = i;
@@ -433,5 +492,5 @@ eDirection PacEngine::getNextMove(PacEntity& ent)
 	if(b != -1)
 		return getDirFromVec(possibleNodes[b] - ent.getNode());
 	else
-		return getDirFromVec(b * ent.getVectorFromDirection());
+		return getDirFromVec(b * ent.getVectorFromDirection());*/
 }

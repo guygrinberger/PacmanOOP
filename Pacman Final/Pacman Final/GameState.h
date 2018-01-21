@@ -30,7 +30,7 @@ private:
 	PointerPack * mPack; // conatin like struct 
 	PacEngine mEngine; // conatin the pac & enemies & map
 	sf::Sprite leftEye, rightEye; // enemies' eyes
-	vector<sf::Sprite> guys; // vector of the characters
+	vector<sf::Sprite> moveables; // vector of the characters
 	sf::Clock mAnimClock; // clock for print the characters every few seconds
 	vector<std::string> mMapNames; // vector of the all the maps
 	sf::Text lives, score, level, speed, time; // texts for the all the menu 

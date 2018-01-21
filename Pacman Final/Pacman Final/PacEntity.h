@@ -37,13 +37,13 @@ public:
 		switch(direction) // how to move
 		{
 		case Left:return 
-			sf::Vector2i(MinusOne,0);
+			sf::Vector2i(-1,0);
 		case Right:return 
-			sf::Vector2i(PlusOne,0);
+			sf::Vector2i(1,0);
 		case Up:return 
-			sf::Vector2i(0, MinusOne);
+			sf::Vector2i(0, -1);
 		case Down:return 
-			sf::Vector2i(0, PlusOne);
+			sf::Vector2i(0, 1);
 		}
 		return sf::Vector2i(0,0);
 	}
