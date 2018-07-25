@@ -45,25 +45,35 @@ We have 1 singleton class:
 
 We have 1 class that manages the entity:
 
-PacEntity – In charge of returning directions from vector and vectors from direction. Also calculates next step.
+**PacEntity** – In charge of returning directions from vector and vectors from direction. Also calculates next step.
 
 And finally, a class that cats as the engine of the game:
 
-PacEngine – Manages the entire engine. Moves, collisions and all physical acts are done here.
+**PacEngine** – Manages the entire engine. Moves, collisions and all physical acts are done here.
 
+***
+## **Level File Format**
+
+The level file format is the same as the one in the map maker exercise.
+
+If you want to build a new level from the map maker it will be added automatically with the correct index. 
+
+If you have an external file you want to add, you need to change its index to the last level exists +1.
 
 ***
 ## **Data Structures and Role**
 
-**STL DUST**- Static and dynamic objects had their own vector of 'shared_ptr'. Stack that holds and manages the game states of 'unique_ptr' type. Many 'multimaps' to hold in an organized way the files with labels so we could find them easily. Furthermore, the collision map is being used in the 'CollisionMnager' to quickly grab the right function for the current collision.
+**gameObjects** are stored in vector of vectors.
+**States** are stored in a stack.
+**BFS** uses queue.
 
 ***
 ## **Algorithms Worth Mentioning**
 
-We made a 'Pixel Perfect' collision in the game. Instead of the regular SFML style collision which only uses the bounding rectangle of the texture to check for collision, our game takes every texture, Process the image so it makes a mask of bits of the actual pixels in the sprite and checks the collision by the pixel.
-The jumping mechanism of the game works by a simple physic formula which calculates the distance and height of the character should go depending on the mass of the character and how long the jump key was pressed.
+The monsters chase the Pacman using BFS algorithm for shortest path in a graph.
 
 ***
 ## **Known Bugs**
-In some places, the player character can get stuck. This caused by the 'pixel perfect' collision.
+
+No bugs.
 
